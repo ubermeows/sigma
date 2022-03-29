@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->string('raw_id');
+            $table->string('tracking_id');
             $table->string('name');
             $table->string('slug');
             $table->string('box_art_url');

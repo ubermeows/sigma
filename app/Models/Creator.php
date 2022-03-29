@@ -10,7 +10,7 @@ class Creator extends Model
     use HasFactory;
 
     protected $fillable = [
-        'raw_id',
+        'tracking_id',
         'name',
     ];
 }

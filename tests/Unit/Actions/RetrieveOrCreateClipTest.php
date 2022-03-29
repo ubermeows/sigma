@@ -22,7 +22,7 @@ class RetrieveOrCreateClipTest extends TestCase
         $clip = Clip::factory()->create();
 
         $rawClip = new RawClip([
-            'id' => $clip->raw_id,
+            'id' => $clip->tracking_id,
             'url' => null,
             'title' => null,
             'thumbnail_url' => null,
@@ -67,6 +67,6 @@ class RetrieveOrCreateClipTest extends TestCase
 
         $this->assertTrue($clip->wasRecentlyCreated);
         $this->assertInstanceOf(Clip::class, $clip);
-        $this->assertEquals('VibrantElegantClipsdadPJSalt', $clip->raw_id);
+        $this->assertEquals('VibrantElegantClipsdadPJSalt', $clip->tracking_id);
     }
 }

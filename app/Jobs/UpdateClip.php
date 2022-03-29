@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Clip;
-use App\Dtos\RawClipId;
+use App\Dtos\TrackingId;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
@@ -33,8 +33,8 @@ class UpdateClip implements ShouldQueue
      */
     public function handle()
     {
-        $rawClip = app(TwitchManager::class)->getClip(new RawClipId(
-            value: $this->clip->raw_id,
+        $rawClip = app(TwitchManager::class)->getClip(new TrackingId(
+            value: $this->clip->tracking_id,
         ));
 
         $this->clip->update([

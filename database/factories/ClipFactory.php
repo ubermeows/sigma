@@ -21,7 +21,7 @@ class ClipFactory extends Factory
     public function definition()
     {
         return [
-            'raw_id' => $this->faker->unique()->numberBetween(1000, 100000),
+            'tracking_id' => $this->faker->unique()->numberBetween(1000, 100000),
             'state' => ClipStates::Active->value,
             'url' => 'https://clips.twitch.tv/VibrantElegantClipsdadPJSalt-xx9LNEBxXConq7El',
             'title' => 'OUH Dans les couilles',

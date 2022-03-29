@@ -18,7 +18,7 @@ class RetrieveOrCreateGame
 
     protected function retrieveGame(RawClip $rawClip): ?Game
     {
-       return Game::where('raw_id', $rawClip->gameId)->first();
+       return Game::where('tracking_id', $rawClip->gameId)->first();
     }
 
     protected function createGame(RawClip $rawClip): Game
@@ -26,7 +26,7 @@ class RetrieveOrCreateGame
         $rawGame = app(TwitchManager::class)->getGame($rawClip);
 
         return Game::create([
-            'raw_id' => $rawGame->id,
+            'tracking_id' => $rawGame->id,
             'name' => $rawGame->name,
             'slug' => Str::slug($rawGame->name),
             'box_art_url' => $rawGame->boxArtUrl,

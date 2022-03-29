@@ -11,7 +11,7 @@ class RetrieveOrCreateCreator
     {
         return Creator::firstOrCreate(
             [
-                'raw_id' => $rawClip->creatorId,
+                'tracking_id' => $rawClip->creatorId,
             ],
             [
                 'name' => $rawClip->creatorName,

@@ -6,7 +6,7 @@ use Http;
 use App\Dtos\RawClip;
 use App\Dtos\RawGame;
 use App\Dtos\Interval;
-use App\Dtos\RawClipId;
+use App\Dtos\TrackingId;
 use App\Dtos\BearerToken;
 use Illuminate\Support\Collection;
 use App\Managers\Twitch\Contracts\Driver;
@@ -49,10 +49,10 @@ class RawApi implements Driver
             ->map(fn($item) => new RawClip($item));
     }
 
-    public function getClip(RawClipId $rawClipId): RawClip
+    public function getClip(TrackingId $trackingId): RawClip
     {
         $url = $this->config['endpoints']['clips'] 
-            . '?id=' . $rawClipId->value;
+            . '?id=' . $trackingId->value;
 
         $items = $this->callClient($url);
 

@@ -4,7 +4,7 @@ namespace App\Dtos;
 
 use Spatie\DataTransferObject\DataTransferObject;
 
-class RawClipId extends DataTransferObject
+class TrackingId extends DataTransferObject
 {
     public $value;
 }

@@ -20,7 +20,7 @@ class RetrieveOrCreateCreatorTest extends TestCase
         $creator = Creator::factory()->create();
 
         $creatorRetrieved = app(RetrieveOrCreateCreator::class)->execute(new RawClip(
-            creator_id: $creator->raw_id,
+            creator_id: $creator->tracking_id,
         ));
 
         $this->assertFalse($creatorRetrieved->wasRecentlyCreated);
@@ -39,7 +39,7 @@ class RetrieveOrCreateCreatorTest extends TestCase
 
         $this->assertTrue($creator->wasRecentlyCreated);
         $this->assertDatabaseHas('creators', [
-            'raw_id' => '519157370',
+            'tracking_id' => '519157370',
             'name' => 'Bill__g8',
         ]);
     }

@@ -18,7 +18,7 @@ class GameFactory extends Factory
     public function definition()
     {
         return [
-            'raw_id' => $this->faker->unique()->numberBetween(1000, 100000),
+            'tracking_id' => $this->faker->unique()->numberBetween(1000, 100000),
             'name' => $this->faker->unique()->name(),
             'slug' => function (array $attributes) {
                 return Str::slug($attributes['name']);
@@ -26,9 +26,9 @@ class GameFactory extends Factory
             'box_art_url' => function (array $attributes) {
 
                 $boxArtUrl = preg_replace(
-                    '#{raw_id}#', 
-                    $attributes['raw_id'], 
-                    'https://static-cdn.jtvnw.net/ttv-boxart/{raw_id}-{width}x{height}.jpg',
+                    '#{tracking_id}#', 
+                    $attributes['tracking_id'], 
+                    'https://static-cdn.jtvnw.net/ttv-boxart/{tracking_id}-{width}x{height}.jpg',
                 );
 
                 return $boxArtUrl;

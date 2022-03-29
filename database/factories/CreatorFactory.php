@@ -17,7 +17,7 @@ class CreatorFactory extends Factory
     public function definition()
     {
         return [
-            'raw_id' => $this->faker->unique()->numberBetween(1000, 100000),
+            'tracking_id' => $this->faker->unique()->numberBetween(1000, 100000),
             'name' => $this->faker->unique()->name(),
         ];
     }

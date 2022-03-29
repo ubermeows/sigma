@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('game_id');
-            $table->string('raw_id');
+            $table->string('tracking_id');
             $table->string('state')->default(ClipStates::Active->value);
             $table->string('url');
             $table->string('title');

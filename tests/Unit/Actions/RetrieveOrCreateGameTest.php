@@ -20,7 +20,7 @@ class RetrieveOrCreateGameTest extends TestCase
         $game = Game::factory()->create();
 
         $gameRetrieved = app(RetrieveOrCreateGame::class)->execute(new RawClip(
-            game_id: $game->raw_id,
+            game_id: $game->tracking_id,
         ));
 
         $this->assertFalse($gameRetrieved->wasRecentlyCreated);
@@ -38,7 +38,7 @@ class RetrieveOrCreateGameTest extends TestCase
 
         $this->assertTrue($game->wasRecentlyCreated);
         $this->assertDatabaseHas('games', [
-            'raw_id' => '27284',
+            'tracking_id' => '27284',
             'name' => 'Retro',
             'slug' => 'retro',
             'box_art_url' => 'https://static-cdn.jtvnw.net/ttv-boxart/27284-{width}x{height}.jpg',

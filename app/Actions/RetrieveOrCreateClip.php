@@ -13,7 +13,7 @@ class RetrieveOrCreateClip
     {
         return Clip::firstOrCreate(
             [
-                'raw_id' => $rawClip->id,
+                'tracking_id' => $rawClip->id,
             ],
             [
                 'creator_id' => $creator->id,
