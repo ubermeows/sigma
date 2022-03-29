@@ -16,5 +16,5 @@ Voir le fichier `Makefile`.
 - Se connecter à la [console](https://dev.twitch.tv/console).
 - Créer une [nouvelle application](https://dev.twitch.tv/console/apps/create).
 - Le **URL de redirection OAuth** doit correspondre à celui de l'application, choisir **Website Integration** pour la **Catégorie**.
-- Récupérer le **Identifiant client** dans **TWITCH_RAWAPI_CLIENT_ID** et le **Secret du client**dans **TWITCH_RAWAPI_CLIENT_SECRET**.
+- Récupérer le **Identifiant client** dans **TWITCH_RAWAPI_CLIENT_ID** et le **Secret du client** dans **TWITCH_RAWAPI_CLIENT_SECRET**.
 - Bisous.
