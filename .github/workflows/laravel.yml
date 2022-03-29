@@ -33,3 +33,8 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit --exclude tier_dependency
+    - name: Invoke deployment hook
+      uses: fjogeleit/http-request-action@master
+      with:
+        url: ${{ secrets.WEBHOOK_URL }}
+        method: 'GET'
