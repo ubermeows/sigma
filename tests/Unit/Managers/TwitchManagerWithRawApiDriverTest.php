@@ -5,10 +5,12 @@ namespace Tests\Unit\Managers;
 use Tests\TestCase;
 use App\Dtos\RawClip;
 use App\Dtos\RawGame;
+use App\Dtos\TrackingId;
 use App\Dtos\BearerToken;
 use App\Services\IntervalFactory;
 use Illuminate\Support\Collection;
 use App\Managers\Twitch\TwitchManager;
+use App\Exceptions\ResponseIsEmptyException;
 use Illuminate\Foundation\Testing\DatabaseMigrations; 
 
 class TwitchManagerWithRawApiDriverTest extends TestCase
@@ -44,6 +46,36 @@ class TwitchManagerWithRawApiDriverTest extends TestCase
 
         $this->assertInstanceOf(Collection::class, $clips);
         $this->assertInstanceOf(RawClip::class, $clips[0]);
+    }
+
+    /**
+     * @test
+     * @group tier_dependency
+     */
+    public function get_clip()
+    {
+        $clip = app(TwitchManager::class)
+            ->driver('rawapi')
+            ->getClip(new TrackingId(
+                value: 'VibrantElegantClipsdadPJSalt-xx9LNEBxXConq7El',
+            ));
+
+        $this->assertInstanceOf(RawClip::class, $clip);
+    }
+
+    /**
+     * @test
+     * @group tier_dependency
+     */
+    public function get_unknow_clip()
+    {
+        $this->expectException(ResponseIsEmptyException::class);
+
+        app(TwitchManager::class)
+            ->driver('rawapi')
+            ->getClip(new TrackingId(
+                value: 'unknow_id',
+            ));
     }
 
     /**

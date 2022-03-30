@@ -9,8 +9,10 @@ use App\Dtos\Interval;
 use App\Dtos\TrackingId;
 use App\Dtos\BearerToken;
 use Illuminate\Support\Collection;
+use Illuminate\Http\Client\Response;
 use App\Managers\Twitch\Contracts\Driver;
 use Illuminate\Http\Client\PendingRequest;
+use App\Exceptions\ResponseIsEmptyException;
 
 class RawApi implements Driver
 {
@@ -75,9 +77,9 @@ class RawApi implements Driver
 
         $response = $client->get($url);
 
-        $attributes = $response->json();
+        $this->responseHasNotEmpty($response);
 
-        return $attributes['data'];
+        return $response->collect('data')->toArray();
     }
 
     protected function getClient(): PendingRequest
@@ -90,5 +92,12 @@ class RawApi implements Driver
 
         return Http::withToken($bearerToken->value)
             ->withHeaders($headers);
+    }
+
+    protected function responseHasNotEmpty(Response $response): void
+    {
+        $items = $response->collect('data');
+
+        $items->isNotEmpty() ?: throw new ResponseIsEmptyException();
     }
 }
