@@ -1,3 +1,4 @@
+![example workflow](https://github.com/ubermeows/sigma/actions/workflows/laravel.yml/badge.svg)
 # Sigma
 ## Installation
 ```bash
