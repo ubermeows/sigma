@@ -7,6 +7,7 @@ use App\Models\Clip;
 use App\Models\Game;
 use App\Dtos\RawClip;
 use App\Models\Creator;
+use App\Enums\ClipStates;
 use App\Actions\RetrieveOrCreateClip;
 use Illuminate\Foundation\Testing\DatabaseMigrations; 
 
@@ -24,9 +25,9 @@ class RetrieveOrCreateClipTest extends TestCase
         $rawClip = new RawClip(
             id: $clip->tracking_id,
             url: null,
-            title: null,
+            title: 'title',
             thumbnail_url: null,
-            duration: null,
+            duration: 12,
             view: null,
             published_at: null,
         );
@@ -71,5 +72,44 @@ class RetrieveOrCreateClipTest extends TestCase
         $this->assertInstanceOf(Clip::class, $clip);
         
         $this->assertEquals('VibrantElegantClipsdadPJSalt', $clip->tracking_id);
+    }
+
+    /**
+     * @test
+     * @dataProvider createSuspiciousClipProvider 
+     */
+    public function create_suspicious_clip(string $title, int $duration)
+    {
+        $creator = Creator::factory()->create();
+        $game = Game::factory()->create();
+
+        $rawClip = new RawClip(
+            id: 'VibrantElegantClipsdadPJSalt',
+            url: 'http://',
+            title: $title,
+            thumbnail_url: 'http://',
+            duration: $duration,
+            view_count: 100,
+            created_at: '2022-03-28',
+        );
+
+        $clip = app(RetrieveOrCreateClip::class)->execute(
+            $rawClip,
+            $game,
+            $creator,
+        );
+
+        $this->assertEquals(ClipStates::Suspect, $clip->state);
+    }
+
+    protected function createSuspiciousClipProvider(): array
+    {
+        return [
+            ['legit title', 60],
+            ['aa[bb]', 15],
+            ['aa[bb]', 60],
+            ['aa｢bb｣', 15],
+            ['aa｢bb｣', 60],
+        ];
     }
 }

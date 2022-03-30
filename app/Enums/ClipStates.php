@@ -5,6 +5,7 @@ namespace App\Enums;
 enum ClipStates : string 
 {
     case Active = 'active';
-    case Dead = 'dead';
+    case Suspect = 'suspect';
     case Reject = 'reject';
+    case Dead = 'dead';
 }
