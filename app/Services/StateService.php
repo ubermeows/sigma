@@ -16,7 +16,6 @@ class StateService
     {
         $isSuspicious = $this->judgeService->adjudicate(
             title: $rawClip->title,
-            duration: $rawClip->duration,
         );
 
         return match ($isSuspicious) {

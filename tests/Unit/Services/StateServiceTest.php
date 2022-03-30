@@ -14,9 +14,9 @@ class StateServiceTest extends TestCase
      * @test
      * @dataProvider adjudicateDataProvider
      */
-    public function adjudicate(bool $expected, string $title, int $duration)
+    public function adjudicate(bool $expected, string $title)
     {
-        $isSuspicious = app(JudgeService::class)->adjudicate($title, $duration);
+        $isSuspicious = app(JudgeService::class)->adjudicate($title);
 
         $this->assertEquals($expected, $isSuspicious);
     }
@@ -24,11 +24,9 @@ class StateServiceTest extends TestCase
     protected function adjudicateDataProvider(): array
     {
         return [
-            [true, 'legit title', 60],
-            [true, 'aa[bb]', 15],
-            [true, 'aa[bb]', 60],
-            [true, 'Le BASTONNISTES INTERNATIONAL TOUR 𝙀𝙓𝙏𝙍𝙀𝙈𝙀 ｢streamer: LMF｣', 15],
-            [false, 'legit title', 15],
+            [false, 'legit title'],
+            [true, 'aa[bb]'],
+            [true, 'Le BASTONNISTES INTERNATIONAL｢streamer: LMF｣'],
         ];
     }
 }

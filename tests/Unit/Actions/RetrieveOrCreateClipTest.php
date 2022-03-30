@@ -78,7 +78,7 @@ class RetrieveOrCreateClipTest extends TestCase
      * @test
      * @dataProvider createSuspiciousClipProvider 
      */
-    public function create_suspicious_clip(string $title, int $duration)
+    public function create_suspicious_clip(string $title)
     {
         $creator = Creator::factory()->create();
         $game = Game::factory()->create();
@@ -88,7 +88,7 @@ class RetrieveOrCreateClipTest extends TestCase
             url: 'http://',
             title: $title,
             thumbnail_url: 'http://',
-            duration: $duration,
+            duration: 30,
             view_count: 100,
             created_at: '2022-03-28',
         );
@@ -105,11 +105,8 @@ class RetrieveOrCreateClipTest extends TestCase
     protected function createSuspiciousClipProvider(): array
     {
         return [
-            ['legit title', 60],
-            ['aa[bb]', 15],
-            ['aa[bb]', 60],
-            ['aa｢bb｣', 15],
-            ['aa｢bb｣', 60],
+            ['aa[bb]'],
+            ['aa｢bb｣'],
         ];
     }
 }

@@ -41,7 +41,7 @@ class RawApi implements Driver
     {
         $url = $this->config['endpoints']['clips'] 
             . '?broadcaster_id=' . $this->config['broadcaster_id']
-            . '&first=50'
+            . '&first=100'
             . '&started_at=' . $interval->startedAt->toIso8601ZuluString()
             . '&ended_at=' . $interval->endedAt->toIso8601ZuluString();
 
