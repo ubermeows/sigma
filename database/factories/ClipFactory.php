@@ -33,6 +33,15 @@ class ClipFactory extends Factory
         ];
     }
 
+    public function freshLongTimeAgo()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'freshed_at' => '2000-01-01',
+            ];
+        });
+    }
+
     public function configure()
     {
         return $this->afterMaking(function (Clip $clip) {

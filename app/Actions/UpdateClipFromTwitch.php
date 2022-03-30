@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use Exception;
 use App\Models\Clip;
 use App\Dtos\RawClip;
 use App\Dtos\TrackingId;
@@ -12,16 +13,20 @@ class UpdateClipFromTwitch
 {
     public function execute(Clip $clip): Clip
     {
-        $rawClip = $this->getRawClip($clip);
+        try {
 
-        $state = $this->defineState($rawClip);
+            $rawClip = $this->getRawClip($clip);
 
-        $clip->update([
-            'title' => $rawClip->title,
-            'state' => $state,
-            'views' => $rawClip->viewCount,
-            'freshed_at' => now(),
-        ]);
+            $clip->update([
+                'title' => $rawClip->title,
+                'state' => ClipStates::Active,
+                'views' => $rawClip->viewCount,
+                'freshed_at' => now(),
+            ]);
+
+        } catch (Exception $e) {
+            $this->markHasDead($clip);
+        }
 
         return $clip;
     }
@@ -33,8 +38,13 @@ class UpdateClipFromTwitch
         ));
     }
 
-    protected function defineState(RawClip $rawClip): ClipStates
+    protected function markHasDead(Clip $clip): Clip
     {
-        return ClipStates::Active;
+        $clip->update([
+            'state' => ClipStates::Dead,
+            'freshed_at' => now(),
+        ]);
+
+        return $clip;
     }
 }
