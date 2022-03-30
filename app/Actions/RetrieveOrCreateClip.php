@@ -6,18 +6,17 @@ use App\Models\Clip;
 use App\Models\Game;
 use App\Dtos\RawClip;
 use App\Models\Creator;
-use App\Enums\ClipStates;
-use App\Services\JudgeService;
+use App\Services\StateService;
 
 class RetrieveOrCreateClip
 {
     public function __construct(
-        protected JudgeService $judgeService,
+        protected StateService $stateService,
     ){}
 
     public function execute(RawClip $rawClip, Game $game, Creator $creator): Clip
     {
-        $state = $this->defineState($rawClip);
+        $state = $this->stateService->define($rawClip);
 
         return Clip::firstOrCreate(
             [
@@ -36,18 +35,5 @@ class RetrieveOrCreateClip
                 'published_at' => $rawClip->createdAt,
             ],
         );
-    }
-
-    protected function defineState(RawClip $rawClip): ClipStates
-    {
-        $isSuspicious = $this->judgeService->adjudicate(
-            title: $rawClip->title,
-            duration: $rawClip->duration,
-        );
-
-        return match ($isSuspicious) {
-            true => ClipStates::Suspect,
-            false => ClipStates::Active,
-        };
     }
 }

@@ -7,19 +7,26 @@ use App\Models\Clip;
 use App\Dtos\RawClip;
 use App\Dtos\TrackingId;
 use App\Enums\ClipStates;
+use App\Services\StateService;
 use App\Managers\Twitch\TwitchManager;
 
 class UpdateClipFromTwitch
 {
+    public function __construct(
+        protected StateService $stateService,
+    ){}
+
     public function execute(Clip $clip): Clip
     {
         try {
 
             $rawClip = $this->getRawClip($clip);
 
+            $state = $this->stateService->define($rawClip);
+
             $clip->update([
                 'title' => $rawClip->title,
-                'state' => ClipStates::Active,
+                'state' => $state,
                 'views' => $rawClip->viewCount,
                 'freshed_at' => now(),
             ]);
