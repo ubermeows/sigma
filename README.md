@@ -1,5 +1,5 @@
-![example workflow](https://github.com/ubermeows/sigma/actions/workflows/laravel.yml/badge.svg)
 # Sigma
+![example workflow](https://github.com/ubermeows/sigma/actions/workflows/laravel.yml/badge.svg)
 ## Installation
 ```bash
 cp .env.example .env
