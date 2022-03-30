@@ -29,7 +29,7 @@ class ClipUpdate extends Command
      */
     public function handle()
     {
-        $clips = Clip::active()->get();
+        $clips = Clip::all();
 
         $clips->map(function ($clip) {
             UpdateClip::dispatch($clip)->onQueue('clip-update');
