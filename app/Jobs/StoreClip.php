@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Clip;
 use App\Dtos\RawClip;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,10 @@ class StoreClip implements ShouldQueue
      */
     public function handle()
     {
+        if ($this->clipAlreadySave()) {
+            return;
+        }
+
         DB::transaction(function () {
 
             $game = app(RetrieveOrCreateGame::class)
@@ -45,5 +50,10 @@ class StoreClip implements ShouldQueue
             app(RetrieveOrCreateClip::class)
                 ->execute($this->rawClip, $game, $creator);
         });
+    }
+
+    protected function clipAlreadySave(): bool
+    {
+        return Clip::where('tracking_id', $this->rawClip->id)->exists(); 
     }
 }
