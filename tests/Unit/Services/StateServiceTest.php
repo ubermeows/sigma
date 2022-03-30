@@ -3,7 +3,9 @@
 namespace Tests\Unit\Services;
 
 use Tests\TestCase;
-use App\Services\JudgeService;
+use App\Dtos\RawClip;
+use App\Enums\ClipStates;
+use App\Services\StateService;
 use Illuminate\Foundation\Testing\DatabaseMigrations; 
 
 class StateServiceTest extends TestCase
@@ -12,21 +14,25 @@ class StateServiceTest extends TestCase
 
     /**
      * @test
-     * @dataProvider adjudicateDataProvider
+     * @dataProvider defineDataProvider
      */
-    public function adjudicate(bool $expected, string $title)
+    public function define(ClipStates $expected, string $title)
     {
-        $isSuspicious = app(JudgeService::class)->adjudicate($title);
+        $rawClip = new RawClip(
+            title: $title,
+        );
 
-        $this->assertEquals($expected, $isSuspicious);
+        $state = app(StateService::class)->define($rawClip);
+
+        $this->assertEquals($expected, $state);
     }
 
-    protected function adjudicateDataProvider(): array
+    protected function defineDataProvider(): array
     {
         return [
-            [false, 'legit title'],
-            [true, 'aa[bb]'],
-            [true, 'Le BASTONNISTES INTERNATIONAL｢streamer: LMF｣'],
+            [ClipStates::Active, 'legit title'],
+            [ClipStates::Suspect, 'aa[bb]'],
+            [ClipStates::Suspect, 'Le BASTONNISTES ｢streamer: LMF｣'],
         ];
     }
 }
