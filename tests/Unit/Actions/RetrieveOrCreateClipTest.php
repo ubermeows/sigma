@@ -21,24 +21,25 @@ class RetrieveOrCreateClipTest extends TestCase
     {
         $clip = Clip::factory()->create();
 
-        $rawClip = new RawClip([
-            'id' => $clip->tracking_id,
-            'url' => null,
-            'title' => null,
-            'thumbnail_url' => null,
-            'duration' => null,
-            'views'=> null,
-            'published_at' => null,
-        ]);
+        $rawClip = new RawClip(
+            id: $clip->tracking_id,
+            url: null,
+            title: null,
+            thumbnail_url: null,
+            duration: null,
+            view: null,
+            published_at: null,
+        );
 
-        $clipRetrieved = app(RetrieveOrCreateClip::class)->execute(
+        $retrievedClip = app(RetrieveOrCreateClip::class)->execute(
             $rawClip,
             $clip->game,
             $clip->creator,
         );
 
-        $this->assertFalse($clipRetrieved->wasRecentlyCreated);
-        $this->assertTrue($clip->is($clipRetrieved));
+        $this->assertFalse($retrievedClip->wasRecentlyCreated);
+
+        $this->assertTrue($clip->is($retrievedClip));
     }
 
     /**
@@ -66,7 +67,9 @@ class RetrieveOrCreateClipTest extends TestCase
         );
 
         $this->assertTrue($clip->wasRecentlyCreated);
+
         $this->assertInstanceOf(Clip::class, $clip);
+        
         $this->assertEquals('VibrantElegantClipsdadPJSalt', $clip->tracking_id);
     }
 }

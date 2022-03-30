@@ -3,11 +3,9 @@
 namespace App\Jobs;
 
 use App\Models\Clip;
-use App\Dtos\TrackingId;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\DB;
+use App\Actions\UpdateClipFromTwitch;
 use Illuminate\Queue\SerializesModels;
-use App\Managers\Twitch\TwitchManager;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,13 +31,6 @@ class UpdateClip implements ShouldQueue
      */
     public function handle()
     {
-        $rawClip = app(TwitchManager::class)->getClip(new TrackingId(
-            value: $this->clip->tracking_id,
-        ));
-
-        $this->clip->update([
-            'title' => $rawClip->title,
-            'views' => $rawClip->viewCount,
-        ]);
+        app(UpdateClipFromTwitch::class)->execute($this->clip);
     }
 }

@@ -28,6 +28,7 @@ class ClipFactory extends Factory
             'thumbnail_url' => 'https://clips-media-assets2.twitch.tv/45083375404-offset-4924-preview-480x272.jpg',
             'duration' => 26,
             'views' => 100,
+            'freshed_at' => '2022-03-28T19:21:57Z',
             'published_at' => '2022-03-28T19:21:57Z',
         ];
     }

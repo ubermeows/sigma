@@ -19,12 +19,13 @@ class RetrieveOrCreateGameTest extends TestCase
     {
         $game = Game::factory()->create();
 
-        $gameRetrieved = app(RetrieveOrCreateGame::class)->execute(new RawClip(
+        $retrievedGame = app(RetrieveOrCreateGame::class)->execute(new RawClip(
             game_id: $game->tracking_id,
         ));
 
-        $this->assertFalse($gameRetrieved->wasRecentlyCreated);
-        $this->assertTrue($game->is($gameRetrieved));
+        $this->assertFalse($retrievedGame->wasRecentlyCreated);
+
+        $this->assertTrue($game->is($retrievedGame));
     }
 
     /**
@@ -37,11 +38,12 @@ class RetrieveOrCreateGameTest extends TestCase
         ));
 
         $this->assertTrue($game->wasRecentlyCreated);
-        $this->assertDatabaseHas('games', [
+
+        $this->assertEquals([
             'tracking_id' => '27284',
             'name' => 'Retro',
             'slug' => 'retro',
             'box_art_url' => 'https://static-cdn.jtvnw.net/ttv-boxart/27284-{width}x{height}.jpg',
-        ]);
+        ], $game->only('tracking_id', 'name', 'slug', 'box_art_url'));
     }
 }

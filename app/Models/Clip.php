@@ -20,6 +20,7 @@ class Clip extends Model
         'thumbnail_url',
         'duration',
         'views',
+        'freshed_at',
         'published_at',
     ];
 
@@ -28,6 +29,7 @@ class Clip extends Model
     ];
 
     protected $dates = [
+        'freshed_at',
         'published_at',
     ];
 

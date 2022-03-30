@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('thumbnail_url');
             $table->integer('duration');
             $table->integer('views')->nullable();
+            $table->timestamp('freshed_at');
             $table->timestamp('published_at');
             $table->timestamps();
         });

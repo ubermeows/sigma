@@ -19,12 +19,13 @@ class RetrieveOrCreateCreatorTest extends TestCase
     {
         $creator = Creator::factory()->create();
 
-        $creatorRetrieved = app(RetrieveOrCreateCreator::class)->execute(new RawClip(
+        $retrievedCreator = app(RetrieveOrCreateCreator::class)->execute(new RawClip(
             creator_id: $creator->tracking_id,
         ));
 
-        $this->assertFalse($creatorRetrieved->wasRecentlyCreated);
-        $this->assertTrue($creator->is($creatorRetrieved));
+        $this->assertFalse($retrievedCreator->wasRecentlyCreated);
+
+        $this->assertTrue($creator->is($retrievedCreator));
     }
 
     /**
@@ -38,9 +39,10 @@ class RetrieveOrCreateCreatorTest extends TestCase
         ));
 
         $this->assertTrue($creator->wasRecentlyCreated);
-        $this->assertDatabaseHas('creators', [
+
+        $this->assertEquals([
             'tracking_id' => '519157370',
             'name' => 'Bill__g8',
-        ]);
+        ], $creator->only('tracking_id', 'name'));
     }
 }

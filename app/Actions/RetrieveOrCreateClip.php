@@ -23,6 +23,7 @@ class RetrieveOrCreateClip
                 'thumbnail_url' => $rawClip->thumbnailUrl,
                 'duration' => $rawClip->duration,
                 'views'=> $rawClip->viewCount,
+                'freshed_at' => $rawClip->createdAt,
                 'published_at' => $rawClip->createdAt,
             ],
         );

@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Models\ClipStore;
+use App\Models\ClipUpdate;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,7 +17,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command(ClipStore::class)
+            ->everyTenMinutes()
+            ->between('17:00', '01:00');
+
+        $schedule->command(ClipStore::class)
+            ->hourly()
+            ->between('2:00', '16:00');
+
+        $schedule->command(ClipUpdate::class)->dailyAt('02:00');
     }
 
     /**
