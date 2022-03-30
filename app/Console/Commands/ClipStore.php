@@ -2,10 +2,14 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
+use App\Dtos\Interval;
 use App\Jobs\StoreClip;
 use Illuminate\Console\Command;
 use App\Services\IntervalFactory;
+use Illuminate\Support\Collection;
 use App\Managers\Twitch\TwitchManager;
+use App\Exceptions\ResponseIsEmptyException;
 
 class ClipStore extends Command
 {
@@ -14,7 +18,7 @@ class ClipStore extends Command
      *
      * @var string
      */
-    protected $signature = 'clip:store';
+    protected $signature = 'clip:store {--startedAt=} {--endedAt=}';
 
     /**
      * The console command description.
@@ -30,16 +34,46 @@ class ClipStore extends Command
      */
     public function handle()
     {
-        $interval = IntervalFactory::currentDay();
+        try {
 
-        $clips = app(TwitchManager::class)
-            ->driver('rawapi')
-            ->getClips($interval);
+            $clips = $this->getClips();
 
-        $clips->map(function ($clip) {
-            StoreClip::dispatch($clip)->onQueue('clip-store');
-        });
+            $clips->map(function ($clip) {
+                StoreClip::dispatch($clip)->onQueue('clip-store');
+            });
+
+        } catch (ResponseIsEmptyException $e) {
+            $this->info('no clips, maybe later ...');
+        }
 
         return Command::SUCCESS;
+    }
+
+    protected function getClips(): Collection
+    {
+        $interval = $this->getInterval();
+
+        return app(TwitchManager::class)
+            ->driver('rawapi')
+            ->getClips($interval);
+    }
+
+    protected function getInterval(): Interval
+    {
+        $startedAt = $this->getDate('startedAt', 'startOfDay');
+        $endedAt = $this->getDate('endedAt', 'endOfDay');
+
+        return IntervalFactory::custom($startedAt, $endedAt);
+    }
+
+    protected function getDate(string $option, string $end): Carbon
+    {
+        $date = $this->option($option);
+
+        $carbon = ($date) 
+            ? Carbon::createFromFormat('Y-m-d', $date)
+            : Carbon::now();
+
+        return $carbon->{$end}();
     }
 }
