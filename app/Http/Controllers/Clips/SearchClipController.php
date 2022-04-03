@@ -13,6 +13,19 @@ class SearchClipController extends Controller
     {
         $query = Clip::query();
 
+        $query->when($request->creator, function ($query) use ($request) {
+
+            $creator = $request->creator;
+
+            $query->where('creator_id', $creator)
+                ->orWhereHas('creator', function ($query) use ($creator) {
+                    return $query
+                        ->where('tracking_id', $creator)
+                        ->orWhere('name', $creator)
+                        ->orWhere('slug', $creator);
+                });
+        });
+
         $query->when($request->relations, function ($query) use ($request) {
             $query->with( ... $request->relations);
         });
