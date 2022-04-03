@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ClipStates;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -34,7 +35,10 @@ class SearchClipRequest extends FormRequest
             'states' => [
                 'nullable',
                 'array',
-                Rule::in(['active', 'reject']),
+                Rule::in([
+                    ClipStates::Active->value,
+                    ClipStates::Reject->value,
+                ]),
             ],
             'per_page' => [
                 'integer',
