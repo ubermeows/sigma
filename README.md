@@ -30,3 +30,19 @@ php8.1 artisan queue:monitor clip-store,clip-update
 - Le **URL de redirection OAuth** doit correspondre à celui de l'application, choisir **Website Integration** pour la **Catégorie**.
 - Récupérer le **Identifiant client** dans **TWITCH_RAWAPI_CLIENT_ID** et le **Secret du client** dans **TWITCH_RAWAPI_CLIENT_SECRET**.
 - Bisous.
+## Endpoints
+### games
+```
+# GET /api/games/search
+$ curl https://sigma.megasaurus.fr/api/games/search
+```
+### clips
+```
+# GET /api/clips/search
+$ curl https://sigma.megasaurus.fr/api/clips/search
+```
+### popular clips
+```
+# GET /api/clips/popular
+$ curl https://sigma.megasaurus.fr/api/clips/popular
+```
