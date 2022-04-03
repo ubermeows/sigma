@@ -54,6 +54,18 @@ class SearchClipRequest extends FormRequest
                     ClipStates::Reject->value,
                 ]),
             ],
+            'after_date' => [
+                'nullable',
+                'date',
+                'exclude_unless:before_date,false',
+                'before:before_date',
+            ],
+            'before_date' => [
+                'nullable',
+                'date',
+                'exclude_unless:after_date,false',
+                'after:after_date',
+            ],
             'per_page' => [
                 'integer',
                 'between:1,100',

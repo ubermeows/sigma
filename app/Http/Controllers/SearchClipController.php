@@ -18,6 +18,14 @@ class SearchClipController extends Controller
             direction: $request->order,
         );
 
+        $query->when($request->after_date, function ($query) use ($request) {
+            $query->where('published_at', '>=', $request->after_date);
+        });
+
+        $query->when($request->before_date, function ($query) use ($request) {
+            $query->where('published_at', '<=', $request->before_date);
+        });
+
         $query->when($request->creator, function ($query) use ($request) {
 
             $creator = $request->creator;
