@@ -36,6 +36,17 @@ class SearchClipRequest extends FormRequest
                 'array',
                 Rule::in(['active', 'reject']),
             ],
+            'per_page' => [
+                'integer',
+                'between:1,100',
+            ],
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'per_page' => $this->per_page ?? 50,
+        ]);
     }
 }

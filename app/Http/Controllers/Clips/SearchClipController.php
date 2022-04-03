@@ -18,7 +18,7 @@ class SearchClipController extends Controller
         });
 
         $query->when($request->states, function ($query) use ($request) {
-            
+
             $states = $request->states;
 
             $method = is_array($states) ? 'whereIn' : 'where';
@@ -26,7 +26,7 @@ class SearchClipController extends Controller
             $query->{$method}('state', $states);
         });
 
-        $items = $query->paginate();
+        $items = $query->paginate($request->per_page);
 
         return response()->json($items);
     }
