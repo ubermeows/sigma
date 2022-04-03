@@ -2,8 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SearchGameController;
-use App\Http\Controllers\SearchClipController;
+
+use App\Http\Controllers\ {
+    SearchGameController,
+    SearchClipController,
+    PopularClipController,
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -16,14 +20,11 @@ use App\Http\Controllers\SearchClipController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::prefix('clips')
     ->as('clips')
     ->name('clips.')
     ->group(function () {
+        Route::get('popular', PopularClipController::class)->name('popular');
         Route::get('search', SearchClipController::class)->name('search');
     });
 
