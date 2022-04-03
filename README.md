@@ -35,14 +35,12 @@ php8.1 artisan queue:monitor clip-store,clip-update
 ```
 # GET /api/games/search
 $ curl https://sigma.megasaurus.fr/api/games/search
+$ curl https://sigma.megasaurus.fr/api/games/search?per_page=100
+$ curl https://sigma.megasaurus.fr/api/games/search?sort=active_clips_count&order=desc
+$ curl https://sigma.megasaurus.fr/api/games/search?sort=published_at&order=desc
 ```
 ### clips
 ```
 # GET /api/clips/search
 $ curl https://sigma.megasaurus.fr/api/clips/search
-```
-### popular clips
-```
-# GET /api/clips/popular
-$ curl https://sigma.megasaurus.fr/api/clips/popular
 ```
