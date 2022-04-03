@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Clips\SearchClipController;
+use App\Http\Controllers\SearchGameController;
+use App\Http\Controllers\SearchClipController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +25,11 @@ Route::prefix('clips')
     ->name('clips.')
     ->group(function () {
         Route::get('search', SearchClipController::class)->name('search');
+    });
+
+Route::prefix('games')
+    ->as('games')
+    ->name('games.')
+    ->group(function () {
+        Route::get('search', SearchGameController::class)->name('search');
     });

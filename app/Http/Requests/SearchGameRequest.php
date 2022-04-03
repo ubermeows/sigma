@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchClipRequest extends FormRequest
+class SearchGameRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,30 +29,11 @@ class SearchClipRequest extends FormRequest
         return [
             'sort' => [
                 'string',
-                Rule::in([
-                    'duration',
-                    'views',
-                    'freshed_at', 
-                    'published_at', 
-                    'created_at',
-                ]),
+                Rule::in(['active_clips_count', 'created_at']),
             ],
             'order' => [
                 'string',
                 Rule::in(['desc', 'asc']),
-            ],
-            'relations' => [
-                'nullable',
-                'array',
-                Rule::in(['creator', 'game', 'event']),
-            ],
-            'states' => [
-                'nullable',
-                'array',
-                Rule::in([
-                    ClipStates::Active->value,
-                    ClipStates::Reject->value,
-                ]),
             ],
             'per_page' => [
                 'integer',

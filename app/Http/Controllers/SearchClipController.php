@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Clips;
+namespace App\Http\Controllers;
 
 use App\Models\Clip;
 use Illuminate\Http\Request;
@@ -12,6 +12,11 @@ class SearchClipController extends Controller
     public function __invoke(SearchClipRequest $request)
     {
         $query = Clip::query();
+
+        $query->orderBy(
+            column: $request->sort, 
+            direction: $request->order,
+        );
 
         $query->when($request->creator, function ($query) use ($request) {
 
