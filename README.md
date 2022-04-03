@@ -9,6 +9,17 @@ docker-compose exec app php artisan key:generate
 ```
 ## Commandes
 Voir le fichier `Makefile`.
+## Commandes clips
+Récuperer les clips
+```
+php8.1 artisan clip:store
+php8.1 artisan clip:store --startedAt=2022-04-01
+php8.1 artisan clip:store --startedAt=2022-04-01 --endedAt=2022-05-01
+```
+Update les clips
+```
+php8.1 artisan clip:update
+```
 ## Jobs monitoring
 ```
 php8.1 artisan queue:monitor clip-store,clip-update
