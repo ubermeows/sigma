@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\Dtos\RawClip;
 use App\Models\Creator;
+use Illuminate\Support\Str;
 
 class RetrieveOrCreateCreator
 {
@@ -15,6 +16,7 @@ class RetrieveOrCreateCreator
             ],
             [
                 'name' => $rawClip->creatorName,
+                'slug' => Str::slug($rawClip->creatorName),
             ],
         );
     }

@@ -12,5 +12,6 @@ class Creator extends Model
     protected $fillable = [
         'tracking_id',
         'name',
+        'slug',
     ];
 }

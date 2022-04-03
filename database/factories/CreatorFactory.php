@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,6 +20,9 @@ class CreatorFactory extends Factory
         return [
             'tracking_id' => $this->faker->unique()->numberBetween(1000, 100000),
             'name' => $this->faker->unique()->name(),
+            'slug' => function (array $attributes) {
+                return Str::slug($attributes['name']);
+            },
         ];
     }
 }
