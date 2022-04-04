@@ -36,4 +36,13 @@ class ShowClipRequest extends FormRequest
             ],
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        $closure = fn($item) => $item ? explode(',', $item) : [];
+
+        $this->merge([
+            'relations' => $closure($this->relations),
+        ]);
+    }
 }

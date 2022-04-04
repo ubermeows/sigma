@@ -75,8 +75,12 @@ class SearchClipRequest extends FormRequest
 
     protected function prepareForValidation()
     {
+        $closure = fn($item) => $item ? explode(',', $item) : [];
+
         $this->merge([
-            'sort' => $this->sort ?? 'created_at',
+            'sort' => $this->sort ?? 'published_at',
+            'states' => $closure($this->states),
+            'relations' => $closure($this->relations),
             'order' => $this->order ?? 'asc',
             'per_page' => $this->per_page ?? 50,
         ]);
