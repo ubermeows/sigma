@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ {
     SearchGameController,
     SearchClipController,
-    PopularClipController,
+    ShowClipController,
 };
 
 /*
@@ -24,7 +24,7 @@ Route::prefix('clips')
     ->as('clips')
     ->name('clips.')
     ->group(function () {
-        Route::get('popular', PopularClipController::class)->name('popular');
+        Route::get('show', ShowClipController::class)->name('show');
         Route::get('search', SearchClipController::class)->name('search');
     });
 

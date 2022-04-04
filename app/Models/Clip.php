@@ -24,6 +24,8 @@ class Clip extends Model
         'published_at',
     ];
 
+    protected $hidden = ['freshed_at', 'created_at', 'updated_at'];
+
     protected $casts = [
         'state' => ClipStates::class,
     ];
@@ -41,6 +43,11 @@ class Clip extends Model
     public function game()
     {
         return $this->belongsTo(Game::class);
+    }
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
     }
 
     public function scopeActive($query)

@@ -14,4 +14,6 @@ class Event extends Model
         'slug',
         'description',
     ];
+
+    protected $hidden = ['created_at', 'updated_at'];
 }

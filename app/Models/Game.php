@@ -17,6 +17,8 @@ class Game extends Model
         'box_art_url',
     ];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     public function activeClips()
     {
         return $this
