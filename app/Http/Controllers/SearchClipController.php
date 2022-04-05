@@ -13,6 +13,10 @@ class SearchClipController extends Controller
     {
         $query = Clip::query();
 
+        $query->when($request->random, function ($query) {
+            $query->inRandomOrder();
+        });
+
         $query->orderBy(
             column: $request->sort, 
             direction: $request->order,
