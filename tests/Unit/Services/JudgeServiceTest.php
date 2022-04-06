@@ -26,6 +26,8 @@ class JudgeServiceTest extends TestCase
         return [
             [false, 'legit title'],
             [true, 'aa[bb]'],
+            [true, 'merci ｢Spidaire]'],
+            [true, 'merci [Spidaire｣'],
             [true, 'Le BASTONNISTES 𝙀𝙓𝙏𝙍𝙀𝙈𝙀 ｢streamer: LMF｣'],
         ];
     }

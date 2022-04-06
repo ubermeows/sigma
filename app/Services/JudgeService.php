@@ -8,6 +8,6 @@ class JudgeService
 {
     public function adjudicate(string $title): bool
     {
-        return (bool) preg_match('#(\[.*\]|｢.*｣)#', $title);
+        return (bool) preg_match('#(\[.*\]|\｢.*\｣|\｢.*\]|\[.*\｣)#', $title);
     }
 }

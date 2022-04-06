@@ -32,6 +32,8 @@ class StateServiceTest extends TestCase
         return [
             [ClipStates::Active, 'legit title'],
             [ClipStates::Suspect, 'aa[bb]'],
+            [ClipStates::Suspect, 'merci ｢Spidaire]'],
+            [ClipStates::Suspect, 'merci [Spidaire｣'],
             [ClipStates::Suspect, 'Le BASTONNISTES ｢streamer: LMF｣'],
         ];
     }
