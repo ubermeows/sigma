@@ -19,10 +19,15 @@ class Game extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
+    public function clips()
+    {
+        return $this->hasMany(Clip::class);
+    }
+
     public function activeClips()
     {
         return $this
-        	->hasMany(Clip::class)
-        	->where('state', ClipStates::Active);
+            ->clips()
+            ->where('state', ClipStates::Active);
     }
 }
