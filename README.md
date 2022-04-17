@@ -16,6 +16,11 @@ php8.1 artisan clip:store
 php8.1 artisan clip:store --startedAt=2022-04-01
 php8.1 artisan clip:store --startedAt=2022-04-01 --endedAt=2022-05-01
 ```
+Récuperer les clips en masse
+```
+php8.1 artisan clip:collect 2022-01
+php8.1 artisan clip:collect 2022-01 2022-05
+```
 Update les clips
 ```
 php8.1 artisan clip:update

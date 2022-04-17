@@ -43,7 +43,7 @@ class ClipCollect extends Command
 
                 $clips = $this->getClips($interval);
 
-                $this->advise($clips);
+                $this->advise($interval, $clips);
 
                 $clips->map(function ($clip) {
                     StoreClip::dispatch($clip)->onQueue('clip-store');
@@ -90,8 +90,16 @@ class ClipCollect extends Command
             ->getClips($interval);
     }
 
-    protected function advise(Collection $clips): void
+    protected function advise(Interval $interval, Collection $clips): void
     {
-        $this->info($clips->count() . ' clips found !');
+        $parts = [
+            $interval->startedAt->format('Y-m-d'),
+            $interval->endedAt->format('Y-m-d'),
+            $clips->count(),
+        ];
+
+        $sentence = sprintf('%s - %s : %s clips found !', ... $parts);
+
+        $this->info($sentence);
     }
 }
