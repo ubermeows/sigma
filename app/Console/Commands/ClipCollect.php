@@ -19,7 +19,7 @@ class ClipCollect extends Command
      *
      * @var string
      */
-    protected $signature = 'clip:collect {startedAt}';
+    protected $signature = 'clip:collect {startedAt} {endedAt?}';
 
     /**
      * The console command description.
@@ -42,6 +42,8 @@ class ClipCollect extends Command
             try {
 
                 $clips = $this->getClips($interval);
+
+                $this->advise($clips);
 
                 $clips->map(function ($clip) {
                     StoreClip::dispatch($clip)->onQueue('clip-store');
@@ -72,11 +74,12 @@ class ClipCollect extends Command
     protected function getPeriod(): CarbonPeriod
     {
         $startedAt = $this->argument('startedAt');
+        $endedAt = $this->argument('endedAt') ?? Carbon::today();
 
         return CarbonPeriod::create(
             $startedAt, 
             '1 month', 
-            Carbon::today(),
+            $endedAt,
         );
     }
 
@@ -85,5 +88,10 @@ class ClipCollect extends Command
         return app(TwitchManager::class)
             ->driver('rawapi')
             ->getClips($interval);
+    }
+
+    protected function advise(Collection $clips): void
+    {
+        $this->info($clips->count() . ' clips found !');
     }
 }
