@@ -22,6 +22,30 @@ class SearchClipController extends Controller
             direction: $request->order,
         );
 
+        $query->when($request->game, function ($query) use ($request) {
+
+            $game = $request->game;
+
+            $query->where('game_id', $game)
+                ->orWhereHas('game', function ($query) use ($game) {
+                    return $query
+                        ->where('name', $game)
+                        ->orWhere('slug', $game);
+                });
+        });
+
+        $query->when($request->event, function ($query) use ($request) {
+
+            $creator = $request->creator;
+
+            $query->where('event_id', $event)
+                ->orWhereHas('event', function ($query) use ($event) {
+                    return $query
+                        ->where('name', $event)
+                        ->orWhere('slug', $event);
+                });
+        });
+
         $query->when($request->after_date, function ($query) use ($request) {
             $query->where('published_at', '>=', $request->after_date);
         });

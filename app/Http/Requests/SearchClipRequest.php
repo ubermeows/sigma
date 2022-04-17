@@ -41,6 +41,18 @@ class SearchClipRequest extends FormRequest
                 'string',
                 Rule::in(['desc', 'asc']),
             ],
+            'creator' => [
+                'nullable',
+                'string',
+            ],
+            'game' => [
+                'nullable',
+                'string',
+            ],
+            'event' => [
+                'nullable',
+                'string',
+            ],
             'random' => [
                 'nullable',
                 'boolean',
