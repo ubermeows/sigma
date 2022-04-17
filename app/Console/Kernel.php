@@ -2,8 +2,8 @@
 
 namespace App\Console;
 
-use App\Models\ClipStore;
-use App\Models\ClipUpdate;
+use App\Console\Commands\ClipStore;
+use App\Console\Commands\ClipUpdate;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
