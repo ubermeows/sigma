@@ -28,21 +28,17 @@ class SearchClipController extends Controller
 
             $query->where('game_id', $game)
                 ->orWhereHas('game', function ($query) use ($game) {
-                    return $query
-                        ->where('name', $game)
-                        ->orWhere('slug', $game);
+                    return $query->where('slug', $game);
                 });
         });
 
         $query->when($request->event, function ($query) use ($request) {
 
-            $creator = $request->creator;
+            $event = $request->event;
 
             $query->where('event_id', $event)
                 ->orWhereHas('event', function ($query) use ($event) {
-                    return $query
-                        ->where('name', $event)
-                        ->orWhere('slug', $event);
+                    return $query->where('slug', $event);
                 });
         });
 
@@ -62,7 +58,6 @@ class SearchClipController extends Controller
                 ->orWhereHas('creator', function ($query) use ($creator) {
                     return $query
                         ->where('tracking_id', $creator)
-                        ->orWhere('name', $creator)
                         ->orWhere('slug', $creator);
                 });
         });
