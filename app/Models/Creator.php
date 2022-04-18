@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Concerns\HasClips;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Creator extends Model
 {
-    use HasFactory;
+    use HasFactory, HasClips;
 
     protected $fillable = [
         'tracking_id',
@@ -16,9 +17,4 @@ class Creator extends Model
     ];
 
     protected $hidden = ['created_at', 'updated_at'];
-
-    public function clips()
-    {
-        return $this->hasMany(Clip::class);
-    }
 }
