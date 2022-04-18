@@ -4,11 +4,11 @@ namespace Tests\Unit\Repositories\Filters;
 
 use Tests\TestCase;
 use App\Models\Clip;
-use App\Repositories\Filters\BeforeDateFilter;
+use App\Repositories\Filters\RandomizerFilter;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\DatabaseMigrations; 
 
-class BeforeDateFilterTest extends TestCase
+class RandomizerFilterTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -18,7 +18,7 @@ class BeforeDateFilterTest extends TestCase
      */
     public function is_applicable(bool $expected, array $arguments)
     {
-        $isApplicable = (new BeforeDateFilter($arguments))->isApplicable();
+        $isApplicable = (new RandomizerFilter($arguments))->isApplicable();
 
         $this->assertEquals($expected, $isApplicable);
     }
@@ -26,7 +26,7 @@ class BeforeDateFilterTest extends TestCase
     protected function isApplicableDataProvider(): array
     {
         return [
-            [true, ['before_date' => '2022-01-01']],
+            [true, ['random' => true]],
             [false, []],
         ];
     }
@@ -36,26 +36,23 @@ class BeforeDateFilterTest extends TestCase
      */
     public function apply()
     {
-        Clip::factory()
-            ->count(3)
-            ->state(new Sequence(
-                ['published_at' => '2022-01-01'],
-                ['published_at' => '2022-01-02'],
-                ['published_at' => '2022-01-03'],
-            ))
+        $clips = Clip::factory()
+            ->count(30)
             ->create();
 
-        $arguments = ['before_date' => '2022-01-02 23:59:59'];
+        $arguments = [
+            'random' => true,
+        ];
 
         $builder = Clip::query();
 
-        (new BeforeDateFilter($arguments))->apply($builder);
+        (new RandomizerFilter($arguments))->apply($builder);
 
         $items = $builder->get();
 
-        $this->assertEquals(
-            [1, 2], 
-            $items->pluck('id')->toArray(),
+        $this->assertNotEquals(
+            $clips->pluck('id'),
+            $items->pluck('id'),
         );
     }
 }

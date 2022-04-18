@@ -18,11 +18,12 @@ class EventFactory extends Factory
     public function definition()
     {
         return [
-            'tracking_id' => $this->faker->unique()->numberBetween(1000, 100000),
+            'id' => $this->faker->unique()->numberBetween(1000, 100000),
             'name' => $this->faker->unique()->name(),
             'slug' => function (array $attributes) {
                 return Str::slug($attributes['name']);
             },
+            'description' => $this->faker->sentence(),
         ];
     }
 }

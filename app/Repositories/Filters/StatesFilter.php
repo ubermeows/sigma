@@ -18,6 +18,6 @@ class StatesFilter extends AbstractFilter
 
         $method = is_array($states) ? 'whereIn' : 'where';
 
-        $query->{$method}('state', $states);
+        $builder->{$method}('state', $states);
     }
 }

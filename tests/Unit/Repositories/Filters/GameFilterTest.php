@@ -4,11 +4,12 @@ namespace Tests\Unit\Repositories\Filters;
 
 use Tests\TestCase;
 use App\Models\Clip;
-use App\Repositories\Filters\AfterDateFilter;
+use App\Models\Game;
+use App\Repositories\Filters\GameFilter;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\DatabaseMigrations; 
 
-class AfterDateFilterTest extends TestCase
+class GameFilterTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -18,7 +19,7 @@ class AfterDateFilterTest extends TestCase
      */
     public function is_applicable(bool $expected, array $arguments)
     {
-        $isApplicable = (new AfterDateFilter($arguments))->isApplicable();
+        $isApplicable = (new GameFilter($arguments))->isApplicable();
 
         $this->assertEquals($expected, $isApplicable);
     }
@@ -26,36 +27,37 @@ class AfterDateFilterTest extends TestCase
     protected function isApplicableDataProvider(): array
     {
         return [
-            [true, ['after_date' => '2022-01-01']],
+            [true, ['game' => 'stalker']],
             [false, []],
         ];
     }
 
     /**
      * @test
+     * @dataProvider applyDataProvider
      */
-    public function apply()
+    public function apply(string $attribute)
     {
-        Clip::factory()
-            ->count(3)
-            ->state(new Sequence(
-                ['published_at' => '2022-01-01'],
-                ['published_at' => '2022-01-02'],
-                ['published_at' => '2022-01-03'],
-            ))
+        $game = Game::factory()
+            ->has(Clip::factory())
             ->create();
 
-        $arguments = ['after_date' => '2022-01-02'];
+        $arguments = ['game' => $game->{$attribute}];
 
         $builder = Clip::query();
 
-        (new AfterDateFilter($arguments))->apply($builder);
+        (new GameFilter($arguments))->apply($builder);
 
         $items = $builder->get();
 
-        $this->assertEquals(
-            [2, 3], 
-            $items->pluck('id')->toArray()
-        );
+        $this->assertCount(1, $items);
+    }
+
+    protected function applyDataProvider()
+    {
+        return [
+            ['id'],
+            ['slug'],
+        ];
     }
 }

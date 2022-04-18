@@ -1,0 +1,70 @@
+<?php
+
+namespace Tests\Unit\Repositories\Filters;
+
+use Tests\TestCase;
+use App\Models\Clip;
+use App\Enums\ClipStates;
+use App\Repositories\Filters\StatesFilter;
+use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Foundation\Testing\DatabaseMigrations; 
+
+class StatesFilterTest extends TestCase
+{
+    use DatabaseMigrations;
+
+    /**
+     * @test
+     * @dataProvider isApplicableDataProvider
+     */
+    public function is_applicable(bool $expected, array $arguments)
+    {
+        $isApplicable = (new StatesFilter($arguments))->isApplicable();
+
+        $this->assertEquals($expected, $isApplicable);
+    }
+
+    protected function isApplicableDataProvider(): array
+    {
+        return [
+            [true, ['states' => ClipStates::Active]],
+            [false, []],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider applyDataProvider
+     */
+    public function apply(int $expected, array $states)
+    {
+        Clip::factory()
+            ->count(2)
+            ->state(new Sequence(
+                ['state' => ClipStates::Active],
+                ['state' => ClipStates::Suspect],
+            ))
+            ->create();
+
+        $arguments = [
+            'states' => $states,
+        ];
+
+        $builder = Clip::query();
+
+        (new StatesFilter($arguments))->apply($builder);
+
+        $items = $builder->get();
+
+        $this->assertCount($expected, $items);
+    }
+
+    protected function applyDataProvider()
+    {
+        return [
+            [1, [ClipStates::Active->value]],
+            [1, [ClipStates::Suspect->value]],
+            [2, [ClipStates::Active->value, ClipStates::Suspect->value]],
+        ];
+    }
+}

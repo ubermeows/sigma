@@ -4,11 +4,12 @@ namespace Tests\Unit\Repositories\Filters;
 
 use Tests\TestCase;
 use App\Models\Clip;
-use App\Repositories\Filters\AfterDateFilter;
+use App\Models\Event;
+use App\Repositories\Filters\EventFilter;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\DatabaseMigrations; 
 
-class AfterDateFilterTest extends TestCase
+class EventFilterTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -18,7 +19,7 @@ class AfterDateFilterTest extends TestCase
      */
     public function is_applicable(bool $expected, array $arguments)
     {
-        $isApplicable = (new AfterDateFilter($arguments))->isApplicable();
+        $isApplicable = (new EventFilter($arguments))->isApplicable();
 
         $this->assertEquals($expected, $isApplicable);
     }
@@ -26,36 +27,37 @@ class AfterDateFilterTest extends TestCase
     protected function isApplicableDataProvider(): array
     {
         return [
-            [true, ['after_date' => '2022-01-01']],
+            [true, ['event' => 'horrible_octobre_2019']],
             [false, []],
         ];
     }
 
     /**
      * @test
+     * @dataProvider applyDataProvider
      */
-    public function apply()
+    public function apply(string $attribute)
     {
-        Clip::factory()
-            ->count(3)
-            ->state(new Sequence(
-                ['published_at' => '2022-01-01'],
-                ['published_at' => '2022-01-02'],
-                ['published_at' => '2022-01-03'],
-            ))
+        $event = Event::factory()
+            ->has(Clip::factory())
             ->create();
 
-        $arguments = ['after_date' => '2022-01-02'];
+        $arguments = ['event' => $event->{$attribute}];
 
         $builder = Clip::query();
 
-        (new AfterDateFilter($arguments))->apply($builder);
+        (new EventFilter($arguments))->apply($builder);
 
         $items = $builder->get();
 
-        $this->assertEquals(
-            [2, 3], 
-            $items->pluck('id')->toArray()
-        );
+        $this->assertCount(1, $items);
+    }
+
+    protected function applyDataProvider()
+    {
+        return [
+            ['id'],
+            ['slug'],
+        ];
     }
 }

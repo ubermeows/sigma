@@ -16,4 +16,9 @@ class Creator extends Model
     ];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    public function clips()
+    {
+        return $this->hasMany(Clip::class);
+    }
 }
