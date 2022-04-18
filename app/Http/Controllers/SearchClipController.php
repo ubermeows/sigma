@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use App\Repositories\ClipRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchClipRequest;
@@ -40,6 +41,9 @@ class SearchClipController extends Controller
             ])
             ->paginate($request->validated());
 
-        return response()->json($items);
+        return new JsonResponse(
+            data: $items,
+            status: JsonResponse::HTTP_OK,
+        );
     }
 }
