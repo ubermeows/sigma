@@ -29,7 +29,7 @@ class SearchGameRequest extends FormRequest
         return [
             'sort' => [
                 'string',
-                Rule::in(['active_clips_count', 'published_at']),
+                Rule::in(['active_clips_count', 'created_at']),
             ],
             'order' => [
                 'string',
@@ -45,7 +45,7 @@ class SearchGameRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'sort' => $this->sort ?? 'published_at',
+            'sort' => $this->sort ?? 'created_at',
             'order' => $this->order ?? 'asc',
             'per_page' => $this->per_page ?? 50,
         ]);
