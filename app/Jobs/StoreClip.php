@@ -39,6 +39,16 @@ class StoreClip implements ShouldQueue
             return;
         }
 
+        $this->store();
+    }
+
+    protected function clipAlreadySave(): bool
+    {
+        return Clip::where('tracking_id', $this->rawClip->id)->exists(); 
+    }
+
+    protected function store()
+    {
         DB::transaction(function () {
 
             $game = app(RetrieveOrCreateGame::class)
@@ -47,13 +57,11 @@ class StoreClip implements ShouldQueue
             $creator = app(RetrieveOrCreateCreator::class)
                 ->execute($this->rawClip);
                 
-            app(RetrieveOrCreateClip::class)
-                ->execute($this->rawClip, $game, $creator);
-        });
-    }
-
-    protected function clipAlreadySave(): bool
-    {
-        return Clip::where('tracking_id', $this->rawClip->id)->exists(); 
+            app(RetrieveOrCreateClip::class)->execute(
+                rawClip: $this->rawClip, 
+                game: $game, 
+                creator: $creator
+            );
+        }); 
     }
 }

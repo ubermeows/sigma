@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
+use App\Models\Clip;
+use App\Dtos\RawClip;
 use App\Dtos\Interval;
 use App\Jobs\StoreClip;
 use Illuminate\Console\Command;
@@ -38,9 +40,11 @@ class ClipStore extends Command
 
             $clips = $this->getClips();
 
-            $clips->map(function ($clip) {
-                StoreClip::dispatch($clip)->onQueue('clip-store');
-            });
+            $clips
+                ->reject(fn($clip) => $this->clipAlreadySave($clip))
+                ->map(function ($clip) {
+                    StoreClip::dispatch($clip)->onQueue('clip-store');
+                });
 
         } catch (ResponseIsEmptyException $e) {
             $this->info('no clips, maybe later ...');
@@ -56,6 +60,11 @@ class ClipStore extends Command
         return app(TwitchManager::class)
             ->driver('rawapi')
             ->getClips($interval);
+    }
+
+    protected function clipAlreadySave(RawClip $clip): bool
+    {
+        return Clip::where('tracking_id', $clip->id)->exists(); 
     }
 
     protected function getInterval(): Interval
