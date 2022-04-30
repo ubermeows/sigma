@@ -24,7 +24,7 @@ Route::prefix('clips')
     ->as('clips')
     ->name('clips.')
     ->group(function () {
-        Route::get('show', ShowClipController::class)->name('show');
+        Route::get('{hook}/show', ShowClipController::class)->name('show');
         Route::get('search', SearchClipController::class)->name('search');
     });
 

@@ -30,19 +30,6 @@ class ShowClipRequest extends FormRequest
                 'array',
                 Rule::in(['creator', 'game', 'event']),
             ],
-            'hook' => [
-                'required',
-                'string',
-            ],
         ];
-    }
-
-    protected function prepareForValidation()
-    {
-        $closure = fn($item) => $item ? explode(',', $item) : [];
-
-        $this->merge([
-            'relations' => $closure($this->relations),
-        ]);
     }
 }
