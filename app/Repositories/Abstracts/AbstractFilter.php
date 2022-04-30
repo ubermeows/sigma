@@ -2,14 +2,11 @@
 
 namespace App\Repositories\Abstracts;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 abstract class AbstractFilter
 {
     public function __construct(
-        public array $arguments = [],
+        protected Request $request,
     ){}
-
-    abstract public function isApplicable(): bool;
-    abstract public function apply(Builder $queryBuilder): void;
 }

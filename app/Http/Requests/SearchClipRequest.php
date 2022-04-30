@@ -95,10 +95,11 @@ class SearchClipRequest extends FormRequest
 
         $this->merge([
             'sort' => $this->sort ?? 'published_at',
+            'order' => $this->order ?? 'asc',
             'states' => $closure($this->states),
             'relations' => $closure($this->relations),
-            'order' => $this->order ?? 'asc',
             'per_page' => $this->per_page ?? 50,
+            'random' => (bool) $this->random ?? false,
         ]);
     }
 }

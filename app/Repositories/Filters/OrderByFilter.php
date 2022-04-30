@@ -7,17 +7,16 @@ use App\Repositories\Abstracts\AbstractFilter;
 
 class OrderByFilter extends AbstractFilter
 {
-    public function isApplicable(): bool
-    {
-    	return isset($this->arguments['sort'])
-    		&& isset($this->arguments['order']);
-    }
-
     public function apply(Builder $builder): void
     {
-        $builder->orderBy(
-            column: $this->arguments['sort'], 
-            direction: $this->arguments['order'],
-        );
+        $builder->when($this->request->filled(['sort', 'order']), function ($builder) {
+
+            $attributes = $this->request->only('sort', 'order');
+
+            $builder->orderBy(
+                column: $attributes['sort'], 
+                direction: $attributes['order'],
+            );
+        });
     }
 }

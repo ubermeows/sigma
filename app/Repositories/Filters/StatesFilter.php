@@ -7,17 +7,13 @@ use App\Repositories\Abstracts\AbstractFilter;
 
 class StatesFilter extends AbstractFilter
 {
-    public function isApplicable(): bool
-    {
-        return isset($this->arguments['states']);
-    }
-
     public function apply(Builder $builder): void
     {
-        $states = $this->arguments['states'];
+        $builder->when($this->request->filled('states'), function ($builder) {
 
-        $method = is_array($states) ? 'whereIn' : 'where';
+            $states = $this->request->get('states');
 
-        $builder->{$method}('state', $states);
+            $builder->whereIn('state', $states);
+        });
     }
 }

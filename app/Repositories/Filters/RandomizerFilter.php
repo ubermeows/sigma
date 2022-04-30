@@ -7,13 +7,10 @@ use App\Repositories\Abstracts\AbstractFilter;
 
 class RandomizerFilter extends AbstractFilter
 {
-    public function isApplicable(): bool
-    {
-        return isset($this->arguments['random']);
-    }
-
     public function apply(Builder $builder): void
     {
-        $builder->inRandomOrder();
+        $builder->when($this->request->get('random'), function ($builder) {
+			$builder->inRandomOrder();
+        });
     }
 }

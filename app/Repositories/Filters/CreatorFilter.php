@@ -7,20 +7,18 @@ use App\Repositories\Abstracts\AbstractFilter;
 
 class CreatorFilter extends AbstractFilter
 {
-    public function isApplicable(): bool
-    {
-        return isset($this->arguments['creator']);
-    }
-
     public function apply(Builder $builder): void
     {
-        $creator = $this->arguments['creator'];
+        $builder->when($this->request->filled('creator'), function ($builder) {
 
-        $builder->where('creator_id', $creator)
-            ->orWhereHas('creator', function ($query) use ($creator) {
-                return $query
-                    ->where('tracking_id', $creator)
-                    ->orWhere('slug', $creator);
-            });
+            $hook = $this->request->get('creator');
+
+            $builder->where('creator_id', $creator)
+                ->orWhereHas('creator', function ($query) use ($creator) {
+                    return $query
+                        ->where('tracking_id', $creator)
+                        ->orWhere('slug', $creator);
+                });
+        });
     }
 }

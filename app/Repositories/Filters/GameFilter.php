@@ -7,18 +7,16 @@ use App\Repositories\Abstracts\AbstractFilter;
 
 class GameFilter extends AbstractFilter
 {
-    public function isApplicable(): bool
-    {
-        return isset($this->arguments['game']);
-    }
-
     public function apply(Builder $builder): void
     {
-    	$hook = $this->arguments['game'];
+        $builder->when($this->request->filled('game'), function ($builder) {
 
-        $builder->where('game_id', $hook)
-            ->orWhereHas('game', function ($query) use ($hook) {
-                return $query->where('slug', $hook);
-            });
+            $hook = $this->request->get('game');
+
+            $builder->where('game_id', $hook)
+                ->orWhereHas('game', function ($query) use ($hook) {
+                    return $query->where('slug', $hook);
+                });
+        });
     }
 }

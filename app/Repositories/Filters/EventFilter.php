@@ -7,18 +7,16 @@ use App\Repositories\Abstracts\AbstractFilter;
 
 class EventFilter extends AbstractFilter
 {
-    public function isApplicable(): bool
-    {
-        return isset($this->arguments['event']);
-    }
-
     public function apply(Builder $builder): void
     {
-    	$hook = $this->arguments['event'];
+        $builder->when($this->request->filled('event'), function ($builder) {
 
-        $builder->where('event_id', $hook)
-            ->orWhereHas('event', function ($query) use ($hook) {
-                return $query->where('slug', $hook);
-            });
+            $hook = $this->request->get('event');
+
+            $builder->where('event_id', $hook)
+                ->orWhereHas('event', function ($query) use ($hook) {
+                    return $query->where('slug', $hook);
+                });
+        });
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clip;
+use App\Repositories\Repository;
 use Illuminate\Http\JsonResponse;
-use App\Repositories\ClipRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchClipRequest;
 
@@ -21,14 +22,12 @@ use App\Repositories\Filters\ {
 
 class SearchClipController extends Controller
 {
-    public function __construct(
-        protected ClipRepository $repository,
-    ){}
-
     public function __invoke(SearchClipRequest $request)
     {
-        $items = $this->repository
-            ->pushFilters([
+        $items = app(Repository::class)
+            ->addBuilder(Clip::query())
+            ->addRequest($request)
+            ->through([
                 AfterDateFilter::class,
                 BeforeDateFilter::class,
                 CreatorFilter::class,
@@ -39,7 +38,9 @@ class SearchClipController extends Controller
                 RandomizerFilter::class,
                 StatesFilter::class,
             ])
-            ->paginate($request->validated());
+            ->then(function ($builder) {
+                return $builder->paginate();
+            });
 
         return new JsonResponse(
             data: $items,
