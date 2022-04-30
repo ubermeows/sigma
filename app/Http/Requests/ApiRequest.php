@@ -53,7 +53,14 @@ class ApiRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        $closure = fn($item) => $item ? explode(',', $item) : null;
+        $closure = function ($item) {
+
+            if (is_array($item)) {
+                return null;
+            }
+
+            return $item ? explode(',', $item) : null;
+        };
 
         $this->merge([
             'sort' => $this->sort ?? 'created_at',
