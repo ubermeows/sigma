@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Clip;
 
 use Carbon\Carbon;
 use App\Models\Clip;
@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
 use App\Managers\Twitch\TwitchManager;
 use App\Exceptions\ResponseIsEmptyException;
 
-class ClipStore extends Command
+class Store extends Command
 {
     /**
      * The name and signature of the console command.

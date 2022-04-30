@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Clip;
 
 use App\Models\Clip;
 use App\Jobs\UpdateClip;
 use Illuminate\Console\Command;
 
-class ClipUpdate extends Command
+class Update extends Command
 {
     /**
      * The name and signature of the console command.

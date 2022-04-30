@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Clip;
 
 use Carbon\Carbon;
 use App\Dtos\Interval;
@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 use App\Managers\Twitch\TwitchManager;
 use App\Exceptions\ResponseIsEmptyException;
 
-class ClipCollect extends Command
+class Collect extends Command
 {
     /**
      * The name and signature of the console command.
