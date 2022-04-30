@@ -31,7 +31,7 @@ class UpdateRecentSuspect extends Command
     public function handle()
     {
         $clips = Clip::where('state', ClipStates::Suspect)
-            ->where('published_at', '>', now()->subHour())
+            ->where('published_at', '>', now()->subHours(3))
             ->get();
 
         $clips->map(function ($clip) {
