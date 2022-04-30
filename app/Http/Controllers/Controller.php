@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\Repository;
 use App\Http\Requests\ApiRequest;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,11 +22,14 @@ class Controller extends BaseController
     {
         $this->requestIsValid($request);
 
-        $items = app(Repository::class)
-            ->addBuilder($this->builder::query())
-            ->addRequest($request)
-            ->through($this->filters)
-            ->then($this->then($request));
+        $items = Cache::remember($request->getRequestUri(), now()->addMinutes(10), function () use ($request) {
+
+            return app(Repository::class)
+                ->addBuilder($this->builder::query())
+                ->addRequest($request)
+                ->through($this->filters)
+                ->then($this->then($request));
+        });
 
         return new JsonResponse(
             data: $items,
