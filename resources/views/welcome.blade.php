@@ -24,10 +24,10 @@
         @foreach($clips as $clip)
             @switch($clip->state->value)
                 @case('active')
-                <p class="cpu">✓ {{$clip->title}}
+                <p class="cpu">✓ {{$clip->title}}</p>
                 @break
                 @case('suspect')
-                <p class="unknown">x "{{$clip->title}}" has been tag suspect
+                <p class="unknown">x "{{$clip->title}}" has been tag suspect</p>
                 @break
             @endswitch
         @endforeach
