@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Clip;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+	$clips = Clip::select('title', 'state')
+		->latest('published_at')
+		->limit(10)
+		->get();
+
+    return view('welcome', ['clips' => $clips]);
 });

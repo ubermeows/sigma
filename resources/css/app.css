@@ -1,0 +1,65 @@
+@import "https://fonts.googleapis.com/css?family=Source+Code+Pro:700";
+body {
+  background-color: #111;
+  color: #fff;
+  font-family: "Source Code Pro";
+  font-size: 15px;
+  padding: 10px 20px;
+}
+
+p {
+  margin: 0 0 2px;
+}
+
+a,
+a:visited,
+a:hover,
+a:focus {
+  color: #89E81D;
+}
+
+.cursor {
+  float: left;
+}
+
+.input-area {
+  display: none;
+}
+
+.input-wrapper {
+  display: block;
+  overflow: hidden;
+  padding: 0 4px 0 5px;
+}
+
+#input {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 0;
+  color: #fff;
+  display: inline-block;
+  font-family: "Source Code Pro";
+  font-size: 15px;
+  margin: 0;
+  margin-left: 4px;
+  padding: 0;
+  width: 100%;
+}
+#input:focus {
+  border: 0;
+  outline: none;
+}
+
+.commands {
+  color: #56B20E;
+}
+
+.cpu {
+  color: grey;
+}
+
+.unknown {
+  color: #FB6C6C;
+}   
