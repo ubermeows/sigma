@@ -8,6 +8,7 @@ use App\Http\Requests\ApiRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Exceptions\UnexpectedApiArgumentsException;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -36,6 +37,10 @@ class Controller extends BaseController
     {
         $rules = (new $this->request)->rules();
 
-        Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            throw new UnexpectedApiArgumentsException($validator->errors());
+        }
     }
 }
