@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Closure;
 use App\Models\Clip;
-use App\Repositories\Repository;
-use Illuminate\Http\JsonResponse;
+use App\Http\Requests\ApiRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchClipRequest;
 
@@ -22,29 +22,26 @@ use App\Repositories\Filters\ {
 
 class SearchClipController extends Controller
 {
-    public function __invoke(SearchClipRequest $request)
-    {
-        $items = app(Repository::class)
-            ->addBuilder(Clip::query())
-            ->addRequest($request)
-            ->through([
-                AfterDateFilter::class,
-                BeforeDateFilter::class,
-                CreatorFilter::class,
-                EventFilter::class,
-                GameFilter::class,
-                LoadRelationsFilter::class,
-                OrderByFilter::class,
-                RandomizerFilter::class,
-                StatesFilter::class,
-            ])
-            ->then(function ($builder) {
-                return $builder->paginate();
-            });
+    protected $request = SearchClipRequest::class;
 
-        return new JsonResponse(
-            data: $items,
-            status: JsonResponse::HTTP_OK,
-        );
+    protected $builder = Clip::class;
+
+    protected $filters = [
+        AfterDateFilter::class,
+        BeforeDateFilter::class,
+        CreatorFilter::class,
+        EventFilter::class,
+        GameFilter::class,
+        LoadRelationsFilter::class,
+        OrderByFilter::class,
+        RandomizerFilter::class,
+        StatesFilter::class,
+    ];
+
+    public function then(ApiRequest $request): Closure
+    {
+        return function ($builder) use ($request) {
+            return $builder->paginate($request->per_page);
+        };
     }
 }

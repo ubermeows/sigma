@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\ClipStates;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchClipRequest extends FormRequest
+class ApiRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,28 +26,11 @@ class SearchClipRequest extends FormRequest
     {
         return [
             'sort' => [
-                Rule::in([
-                    'duration',
-                    'views',
-                    'freshed_at', 
-                    'published_at', 
-                    'created_at',
-                ]),
+                'string',
             ],
             'order' => [
+                'string',
                 Rule::in(['desc', 'asc']),
-            ],
-            'creator' => [
-                'nullable',
-                'string',
-            ],
-            'game' => [
-                'nullable',
-                'string',
-            ],
-            'event' => [
-                'nullable',
-                'string',
             ],
             'random' => [
                 'nullable',
@@ -58,27 +39,14 @@ class SearchClipRequest extends FormRequest
             'relations' => [
                 'nullable',
                 'array',
-                Rule::in(['creator', 'game', 'event']),
             ],
             'states' => [
                 'nullable',
                 'array',
-                Rule::in([
-                    ClipStates::Active->value,
-                    ClipStates::Reject->value,
-                ]),
             ],
-            'after_date' => [
-                'nullable',
-                'date',
-                'exclude_unless:before_date,false',
-                'before:before_date',
-            ],
-            'before_date' => [
-                'nullable',
-                'date',
-                'exclude_unless:after_date,false',
-                'after:after_date',
+            'per_page' => [
+                'integer',
+                'between:1,100',
             ],
         ];
     }
@@ -88,7 +56,7 @@ class SearchClipRequest extends FormRequest
         $closure = fn($item) => $item ? explode(',', $item) : null;
 
         $this->merge([
-            'sort' => $this->sort ?? 'published_at',
+            'sort' => $this->sort ?? 'created_at',
             'order' => $this->order ?? 'asc',
             'states' => $closure($this->states),
             'relations' => $closure($this->relations),

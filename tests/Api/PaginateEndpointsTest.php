@@ -20,11 +20,6 @@ class PaginateEndpointsTest extends TestCase
         $response = $this->get($url);
 
         $response->assertStatus(200);
-
-        $this->assertInstanceOf(
-        	LengthAwarePaginator::class,
-        	$response->baseResponse->original
-        );
     }
 
     protected function paginateProvider()

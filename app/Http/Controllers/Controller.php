@@ -2,12 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
+use App\Repositories\Repository;
+use App\Http\Requests\ApiRequest;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function __invoke(ApiRequest $request)
+    {
+        $this->requestIsValid($request);
+
+        $items = app(Repository::class)
+            ->addBuilder($this->builder::query())
+            ->addRequest($request)
+            ->through($this->filters)
+            ->then($this->then($request));
+
+        return new JsonResponse(
+            data: $items,
+            status: JsonResponse::HTTP_OK,
+        );
+    }
+
+    protected function requestIsValid(ApiRequest $request): void
+    {
+        $rules = (new $this->request)->rules();
+
+        Validator::make($request->all(), $rules);
+    }
 }

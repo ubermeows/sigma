@@ -2,27 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
+use Closure;
+use App\Models\Game;
+use App\Http\Requests\ApiRequest;
 use App\Http\Controllers\Controller;
-use App\Repositories\GameRepository;
 use App\Http\Requests\SearchGameRequest;
-use App\Repositories\Filters\OrderByFilter;
+
+use App\Repositories\Filters\ {
+    OrderByFilter,
+    RandomizerFilter,
+};
 
 class SearchGameController extends Controller
 {
-    public function __construct(
-        protected GameRepository $repository,
-    ){}
+    protected $request = SearchGameRequest::class;
 
-    public function __invoke(SearchGameRequest $request)
+    protected $builder = Game::class;
+
+    protected $filters = [
+        OrderByFilter::class,
+        RandomizerFilter::class,
+    ];
+
+    public function then(ApiRequest $request): Closure
     {
-        $items = $this->repository
-            ->pushFilter(OrderByFilter::class)
-            ->paginate($request->validated());
-            
-        return new JsonResponse(
-            data: $items,
-            status: JsonResponse::HTTP_OK,
-        );
+        return function ($builder) use ($request) {
+            return $builder->paginate($request->per_page);
+        };
     }
 }

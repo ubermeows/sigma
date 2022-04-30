@@ -28,26 +28,8 @@ class SearchGameRequest extends FormRequest
     {
         return [
             'sort' => [
-                'string',
                 Rule::in(['active_clips_count', 'created_at']),
             ],
-            'order' => [
-                'string',
-                Rule::in(['desc', 'asc']),
-            ],
-            'per_page' => [
-                'integer',
-                'between:1,100',
-            ],
         ];
-    }
-
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'sort' => $this->sort ?? 'created_at',
-            'order' => $this->order ?? 'asc',
-            'per_page' => $this->per_page ?? 50,
-        ]);
     }
 }
