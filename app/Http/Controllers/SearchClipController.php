@@ -4,21 +4,10 @@ namespace App\Http\Controllers;
 
 use Closure;
 use App\Models\Clip;
+use App\Repositories\Filters;
 use App\Http\Requests\ApiRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchClipRequest;
-
-use App\Repositories\Filters\ {
-    GameFilter,
-    EventFilter,
-    StatesFilter,
-    CreatorFilter,
-    OrderByFilter,
-    AfterDateFilter,
-    RandomizerFilter,
-    BeforeDateFilter,
-    LoadRelationsFilter,
-};
 
 class SearchClipController extends Controller
 {
@@ -27,15 +16,15 @@ class SearchClipController extends Controller
     protected $builder = Clip::class;
 
     protected $filters = [
-        AfterDateFilter::class,
-        BeforeDateFilter::class,
-        CreatorFilter::class,
-        EventFilter::class,
-        GameFilter::class,
-        LoadRelationsFilter::class,
-        OrderByFilter::class,
-        RandomizerFilter::class,
-        StatesFilter::class,
+        Filters\AfterDateFilter::class,
+        Filters\BeforeDateFilter::class,
+        Filters\CreatorFilter::class,
+        Filters\EventFilter::class,
+        Filters\GameFilter::class,
+        Filters\LoadRelationsFilter::class,
+        Filters\OrderByFilter::class,
+        Filters\RandomizerFilter::class,
+        Filters\StatesFilter::class,
     ];
 
     public function then(ApiRequest $request): Closure
