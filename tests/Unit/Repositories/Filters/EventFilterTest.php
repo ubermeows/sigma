@@ -15,25 +15,6 @@ class EventFilterTest extends TestCase
 
     /**
      * @test
-     * @dataProvider isApplicableDataProvider
-     */
-    public function is_applicable(bool $expected, array $arguments)
-    {
-        $isApplicable = (new EventFilter($arguments))->isApplicable();
-
-        $this->assertEquals($expected, $isApplicable);
-    }
-
-    protected function isApplicableDataProvider(): array
-    {
-        return [
-            [true, ['event' => 'horrible_octobre_2019']],
-            [false, []],
-        ];
-    }
-
-    /**
-     * @test
      * @dataProvider applyDataProvider
      */
     public function apply(string $attribute)
@@ -42,11 +23,11 @@ class EventFilterTest extends TestCase
             ->has(Clip::factory())
             ->create();
 
-        $arguments = ['event' => $event->{$attribute}];
+        $request = $this->mockRequest(query: ['event' => $event->{$attribute}]);
 
         $builder = Clip::query();
 
-        (new EventFilter($arguments))->apply($builder);
+        (new EventFilter($request))->apply($builder);
 
         $items = $builder->get();
 

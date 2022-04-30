@@ -31,7 +31,6 @@ class PaginateEndpointsTest extends TestCase
     {
         return [
             ['api/clips/search'],
-            ['api/games/search'],
         ];
     }
 }

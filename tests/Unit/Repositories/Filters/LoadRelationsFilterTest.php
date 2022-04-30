@@ -14,37 +14,18 @@ class LoadRelationsFilterTest extends TestCase
 
     /**
      * @test
-     * @dataProvider isApplicableDataProvider
-     */
-    public function is_applicable(bool $expected, array $arguments)
-    {
-        $isApplicable = (new LoadRelationsFilter($arguments))->isApplicable();
-
-        $this->assertEquals($expected, $isApplicable);
-    }
-
-    protected function isApplicableDataProvider(): array
-    {
-        return [
-            [true, ['relations' => 'game']],
-            [false, []],
-        ];
-    }
-
-    /**
-     * @test
      */
     public function apply()
     {
         $clip = Clip::factory()->create();
 
-        $arguments = [
-            'relations' => ['game']
-        ];
+        $request = $this->mockRequest(query: [
+            'relations' => ['game'],
+        ]);
 
         $builder = Clip::query();
 
-        (new LoadRelationsFilter($arguments))->apply($builder);
+        (new LoadRelationsFilter($request))->apply($builder);
 
         $items = $builder->get();
 

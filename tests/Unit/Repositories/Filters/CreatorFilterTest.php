@@ -15,25 +15,6 @@ class CreatorFilterTest extends TestCase
 
     /**
      * @test
-     * @dataProvider isApplicableDataProvider
-     */
-    public function is_applicable(bool $expected, array $arguments)
-    {
-        $isApplicable = (new CreatorFilter($arguments))->isApplicable();
-
-        $this->assertEquals($expected, $isApplicable);
-    }
-
-    protected function isApplicableDataProvider(): array
-    {
-        return [
-            [true, ['creator' => 'bill']],
-            [false, []],
-        ];
-    }
-
-    /**
-     * @test
      * @dataProvider applyDataProvider
      */
     public function apply(string $attribute)
@@ -42,11 +23,11 @@ class CreatorFilterTest extends TestCase
             ->has(Clip::factory())
             ->create();
 
-        $arguments = ['creator' => $creator->{$attribute}];
+        $request = $this->mockRequest(query: ['creator' => $creator->{$attribute}]);
 
         $builder = Clip::query();
 
-        (new CreatorFilter($arguments))->apply($builder);
+        (new CreatorFilter($request))->apply($builder);
 
         $items = $builder->get();
 

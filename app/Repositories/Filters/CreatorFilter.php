@@ -13,11 +13,11 @@ class CreatorFilter extends AbstractFilter
 
             $hook = $this->request->get('creator');
 
-            $builder->where('creator_id', $creator)
-                ->orWhereHas('creator', function ($query) use ($creator) {
+            $builder->where('creator_id', $hook)
+                ->orWhereHas('creator', function ($query) use ($hook) {
                     return $query
-                        ->where('tracking_id', $creator)
-                        ->orWhere('slug', $creator);
+                        ->where('tracking_id', $hook)
+                        ->orWhere('slug', $hook);
                 });
         });
     }

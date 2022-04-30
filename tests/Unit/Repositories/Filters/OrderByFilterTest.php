@@ -14,26 +14,6 @@ class OrderByFilterTest extends TestCase
 
     /**
      * @test
-     * @dataProvider isApplicableDataProvider
-     */
-    public function is_applicable(bool $expected, array $arguments)
-    {
-        $isApplicable = (new OrderByFilter($arguments))->isApplicable();
-
-        $this->assertEquals($expected, $isApplicable);
-    }
-
-    protected function isApplicableDataProvider(): array
-    {
-        return [
-            [true, ['sort' => 'created_at', 'order' => 'DESC']],
-            [false, ['sort' => 'created_at']],
-            [false, ['order' => 'DESC']],
-        ];
-    }
-
-    /**
-     * @test
      */
     public function apply()
     {
@@ -46,14 +26,14 @@ class OrderByFilterTest extends TestCase
             ))
             ->create();
 
-        $arguments = [
+        $request = $this->mockRequest(query: [
             'sort' => 'published_at',
             'order' => 'DESC',
-        ];
+        ]);
 
         $builder = Clip::query();
 
-        (new OrderByFilter($arguments))->apply($builder);
+        (new OrderByFilter($request))->apply($builder);
 
         $items = $builder->get();
 

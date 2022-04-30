@@ -14,25 +14,6 @@ class BeforeDateFilterTest extends TestCase
 
     /**
      * @test
-     * @dataProvider isApplicableDataProvider
-     */
-    public function is_applicable(bool $expected, array $arguments)
-    {
-        $isApplicable = (new BeforeDateFilter($arguments))->isApplicable();
-
-        $this->assertEquals($expected, $isApplicable);
-    }
-
-    protected function isApplicableDataProvider(): array
-    {
-        return [
-            [true, ['before_date' => '2022-01-01']],
-            [false, []],
-        ];
-    }
-
-    /**
-     * @test
      */
     public function apply()
     {
@@ -45,11 +26,11 @@ class BeforeDateFilterTest extends TestCase
             ))
             ->create();
 
-        $arguments = ['before_date' => '2022-01-02 23:59:59'];
+        $request = $this->mockRequest(query: ['before_date' => '2022-01-02 23:59:59']);
 
         $builder = Clip::query();
 
-        (new BeforeDateFilter($arguments))->apply($builder);
+        (new BeforeDateFilter($request))->apply($builder);
 
         $items = $builder->get();
 

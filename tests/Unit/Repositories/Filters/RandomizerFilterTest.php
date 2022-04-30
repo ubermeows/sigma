@@ -14,25 +14,6 @@ class RandomizerFilterTest extends TestCase
 
     /**
      * @test
-     * @dataProvider isApplicableDataProvider
-     */
-    public function is_applicable(bool $expected, array $arguments)
-    {
-        $isApplicable = (new RandomizerFilter($arguments))->isApplicable();
-
-        $this->assertEquals($expected, $isApplicable);
-    }
-
-    protected function isApplicableDataProvider(): array
-    {
-        return [
-            [true, ['random' => true]],
-            [false, []],
-        ];
-    }
-
-    /**
-     * @test
      */
     public function apply()
     {
@@ -40,13 +21,11 @@ class RandomizerFilterTest extends TestCase
             ->count(30)
             ->create();
 
-        $arguments = [
-            'random' => true,
-        ];
+        $request = $this->mockRequest(query: ['random' => true]);
 
         $builder = Clip::query();
 
-        (new RandomizerFilter($arguments))->apply($builder);
+        (new RandomizerFilter($request))->apply($builder);
 
         $items = $builder->get();
 

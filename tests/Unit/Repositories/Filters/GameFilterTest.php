@@ -15,25 +15,6 @@ class GameFilterTest extends TestCase
 
     /**
      * @test
-     * @dataProvider isApplicableDataProvider
-     */
-    public function is_applicable(bool $expected, array $arguments)
-    {
-        $isApplicable = (new GameFilter($arguments))->isApplicable();
-
-        $this->assertEquals($expected, $isApplicable);
-    }
-
-    protected function isApplicableDataProvider(): array
-    {
-        return [
-            [true, ['game' => 'stalker']],
-            [false, []],
-        ];
-    }
-
-    /**
-     * @test
      * @dataProvider applyDataProvider
      */
     public function apply(string $attribute)
@@ -42,11 +23,11 @@ class GameFilterTest extends TestCase
             ->has(Clip::factory())
             ->create();
 
-        $arguments = ['game' => $game->{$attribute}];
+        $request = $this->mockRequest(query: ['game' => $game->{$attribute}]);
 
         $builder = Clip::query();
 
-        (new GameFilter($arguments))->apply($builder);
+        (new GameFilter($request))->apply($builder);
 
         $items = $builder->get();
 

@@ -15,25 +15,6 @@ class StatesFilterTest extends TestCase
 
     /**
      * @test
-     * @dataProvider isApplicableDataProvider
-     */
-    public function is_applicable(bool $expected, array $arguments)
-    {
-        $isApplicable = (new StatesFilter($arguments))->isApplicable();
-
-        $this->assertEquals($expected, $isApplicable);
-    }
-
-    protected function isApplicableDataProvider(): array
-    {
-        return [
-            [true, ['states' => ClipStates::Active]],
-            [false, []],
-        ];
-    }
-
-    /**
-     * @test
      * @dataProvider applyDataProvider
      */
     public function apply(int $expected, array $states)
@@ -46,13 +27,11 @@ class StatesFilterTest extends TestCase
             ))
             ->create();
 
-        $arguments = [
-            'states' => $states,
-        ];
+        $request = $this->mockRequest(query: ['states' => $states]);
 
         $builder = Clip::query();
 
-        (new StatesFilter($arguments))->apply($builder);
+        (new StatesFilter($request))->apply($builder);
 
         $items = $builder->get();
 
