@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
-	$clips = Clip::select('title', 'state')
-		->latest('published_at')
-		->limit(10)
-		->get();
+    $clips = Clip::select('title', 'state')
+        ->latest('published_at')
+        ->limit(10)
+        ->get();
 
     return view('welcome', ['clips' => $clips]);
 });

@@ -15,14 +15,19 @@
         <p class="cpu">Every ten minutes between 17:00 - 01:00</p>
         <p class="cpu">Hourly between 2:00 - 16:00</p>
         <br>
+        <p class="cpu">- <span class="commands">Endpoints</span></p>
+        <p class="cpu">[GET] /api/clips/search</p>
+        <p class="cpu">[GET] /api/clips/{id}/show</p>
+        <p class="cpu">[GET] /api/games/search</p>
+        <br>
         <p class="cpu">- <span class="commands">Last 10 clips</span></p>
         @foreach($clips as $clip)
             @switch($clip->state->value)
                 @case('active')
-                <p class="cpu">✓ {{$clip->title}}</p>
+                <p class="cpu">✓ {{$clip->title}}
                 @break
                 @case('suspect')
-                <p class="unknown">x "{{$clip->title}}" has been tag suspect</p>
+                <p class="unknown">x "{{$clip->title}}" has been tag suspect
                 @break
             @endswitch
         @endforeach
