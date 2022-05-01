@@ -7,6 +7,7 @@ use App\Models\Clip;
 use App\Dtos\RawClip;
 use App\Dtos\Interval;
 use App\Jobs\StoreClip;
+use App\Services\JudgeService;
 use Illuminate\Console\Command;
 use App\Services\IntervalFactory;
 use Illuminate\Support\Collection;
@@ -41,6 +42,7 @@ class Store extends Command
             $clips = $this->getClips();
 
             $clips
+                ->reject(fn($clip) => $this->clipIsSuspect($clip))
                 ->reject(fn($clip) => $this->clipAlreadySave($clip))
                 ->map(function ($clip) {
                     StoreClip::dispatch($clip)->onQueue('clip-store');
@@ -60,6 +62,11 @@ class Store extends Command
         return app(TwitchManager::class)
             ->driver('rawapi')
             ->getClips($interval);
+    }
+
+    protected function clipIsSuspect(RawClip $clip): bool
+    {
+        return app(JudgeService::class)->adjudicate($clip->title);
     }
 
     protected function clipAlreadySave(RawClip $clip): bool

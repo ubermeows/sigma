@@ -24,8 +24,6 @@ class Kernel extends ConsoleKernel
             ->hourly()
             ->between('2:00', '16:00');
 
-        $schedule->command(Clips\UpdateRecentSuspect::class)->everyTenMinutes();
-
         $schedule->command(Clips\Update::class)->dailyAt('02:00');
     }
 
