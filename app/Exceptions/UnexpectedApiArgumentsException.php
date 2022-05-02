@@ -25,7 +25,7 @@ class UnexpectedApiArgumentsException extends Exception
     public function render()
     {
         return response()->json([
-            'message' => 'Unexpected api arguments.',
+            'message' => "I'm sorry Dave, I'm afraid I can't do that.",
             'request-id' => request()->header('Request-Id'),
         ], 404);
     }
