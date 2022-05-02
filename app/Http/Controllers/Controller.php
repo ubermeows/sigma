@@ -55,6 +55,6 @@ class Controller extends BaseController
                 ->addRequest($request)
                 ->through($this->filters)
                 ->then($this->then($request));
-        }
+        };
     }
 }
