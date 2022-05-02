@@ -24,7 +24,7 @@ class SearchClipController extends Controller
         Filters\LoadRelationsFilter::class,
         Filters\OrderByFilter::class,
         Filters\RandomizerFilter::class,
-        Filters\StatesFilter::class,
+        Filters\ActiveState::class,
     ];
 
     public function then(ApiRequest $request): Closure
