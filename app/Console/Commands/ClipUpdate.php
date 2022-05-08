@@ -6,7 +6,7 @@ use App\Models\Clip;
 use App\Jobs\UpdateClip;
 use Illuminate\Console\Command;
 
-class Update extends Command
+class ClipUpdate extends Command
 {
     /**
      * The name and signature of the console command.
