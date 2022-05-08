@@ -2,7 +2,8 @@
 
 namespace App\Console;
 
-use App\Console\Commandes\Clip;
+use App\Console\Commandes\Clip\Store;
+use App\Console\Commandes\Clip\Update;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,15 +17,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(Clip\Store::class)
+        $schedule->command(Store::class)
             ->everyTenMinutes()
             ->between('17:00', '01:00');
 
-        $schedule->command(Clip\Store::class)
+        $schedule->command(Store::class)
             ->hourly()
             ->between('2:00', '16:00');
 
-        $schedule->command(Clip\Update::class)->dailyAt('02:00');
+        $schedule->command(Update::class)->dailyAt('02:00');
     }
 
     /**
