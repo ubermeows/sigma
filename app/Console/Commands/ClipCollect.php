@@ -3,9 +3,12 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
+use App\Models\Clip;
+use App\Dtos\RawClip;
 use App\Dtos\Interval;
 use App\Jobs\StoreClip;
 use Carbon\CarbonPeriod;
+use App\Services\JudgeService;
 use Illuminate\Console\Command;
 use App\Services\IntervalFactory;
 use Illuminate\Support\Collection;
@@ -45,9 +48,12 @@ class ClipCollect extends Command
 
                 $this->advise($interval, $clips);
 
-                $clips->map(function ($clip) {
-                    StoreClip::dispatch($clip)->onQueue('clip-store');
-                });
+                $clips
+                    ->reject(fn($clip) => $this->clipIsSuspect($clip))
+                    ->reject(fn($clip) => $this->clipAlreadySave($clip))
+                    ->map(function ($clip) {
+                        StoreClip::dispatch($clip)->onQueue('clip-store');
+                    });
 
             } catch (ResponseIsEmptyException $e) {}
         }
@@ -88,6 +94,16 @@ class ClipCollect extends Command
         return app(TwitchManager::class)
             ->driver('rawapi')
             ->getClips($interval);
+    }
+
+    protected function clipIsSuspect(RawClip $clip): bool
+    {
+        return app(JudgeService::class)->adjudicate($clip->title);
+    }
+
+    protected function clipAlreadySave(RawClip $clip): bool
+    {
+        return Clip::where('tracking_id', $clip->id)->exists(); 
     }
 
     protected function advise(Interval $interval, Collection $clips): void
