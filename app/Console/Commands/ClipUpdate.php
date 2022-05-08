@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Clip;
+namespace App\Console\Commands;
 
 use App\Models\Clip;
 use App\Jobs\UpdateClip;
