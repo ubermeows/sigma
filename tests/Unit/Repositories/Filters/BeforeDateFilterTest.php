@@ -26,7 +26,9 @@ class BeforeDateFilterTest extends TestCase
             ))
             ->create();
 
-        $request = $this->mockRequest(query: ['before_date' => '2022-01-02 23:59:59']);
+        $request = $this->mockRequest(query: [
+            'before_date' => '2022-01-02 23:59:59',
+        ]);
 
         $builder = Clip::query();
 

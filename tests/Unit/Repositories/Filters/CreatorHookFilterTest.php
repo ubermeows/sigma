@@ -5,11 +5,11 @@ namespace Tests\Unit\Repositories\Filters;
 use Tests\TestCase;
 use App\Models\Clip;
 use App\Models\Creator;
-use App\Repositories\Filters\CreatorFilter;
+use App\Repositories\Filters\CreatorHookFilter;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\DatabaseMigrations; 
 
-class CreatorFilterTest extends TestCase
+class CreatorHookFilterTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -23,11 +23,13 @@ class CreatorFilterTest extends TestCase
             ->has(Clip::factory())
             ->create();
 
-        $request = $this->mockRequest(query: ['creator' => $creator->{$attribute}]);
+        $request = $this->mockRequest(query: [
+            'creator' => $creator->{$attribute},
+        ]);
 
         $builder = Clip::query();
 
-        (new CreatorFilter($request))->apply($builder);
+        (new CreatorHookFilter($request))->apply($builder);
 
         $items = $builder->get();
 

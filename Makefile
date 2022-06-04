@@ -1,4 +1,7 @@
-test:
+paratest:
+	vendor/bin/paratest --processes=3 --runner WrapperRunner
+
+phpunit:
 	vendor/bin/phpunit
 
 local-test:

@@ -5,11 +5,11 @@ namespace Tests\Unit\Repositories\Filters;
 use Tests\TestCase;
 use App\Models\Clip;
 use App\Models\Game;
-use App\Repositories\Filters\GameFilter;
+use App\Repositories\Filters\GameHookFilter;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\DatabaseMigrations; 
 
-class GameFilterTest extends TestCase
+class GameHookFilterTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -23,11 +23,13 @@ class GameFilterTest extends TestCase
             ->has(Clip::factory())
             ->create();
 
-        $request = $this->mockRequest(query: ['game' => $game->{$attribute}]);
+        $request = $this->mockRequest(query: [
+            'game' => $game->{$attribute},
+        ]);
 
         $builder = Clip::query();
 
-        (new GameFilter($request))->apply($builder);
+        (new GameHookFilter($request))->apply($builder);
 
         $items = $builder->get();
 

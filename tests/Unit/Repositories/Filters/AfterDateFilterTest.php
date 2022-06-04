@@ -28,7 +28,9 @@ class AfterDateFilterTest extends TestCase
             ))
             ->create();
 
-        $request = $this->mockRequest(query: ['after_date' => '2022-01-02']);
+        $request = $this->mockRequest(query: [
+            'after_date' => '2022-01-02',
+        ]);
 
         $builder = Clip::query();
 

@@ -5,16 +5,16 @@ namespace App\Repositories\Filters;
 use Illuminate\Database\Eloquent\Builder;
 use App\Repositories\Abstracts\AbstractFilter;
 
-class GameFilter extends AbstractFilter
+class EventHookFilter extends AbstractFilter
 {
     public function apply(Builder $builder): void
     {
-        $builder->when($this->request->filled('game'), function ($builder) {
+        $builder->when($this->request->filled('event'), function ($builder) {
 
-            $hook = $this->request->get('game');
+            $hook = $this->request->get('event');
 
-            $builder->where('game_id', $hook)
-                ->orWhereHas('game', function ($query) use ($hook) {
+            $builder->where('event_id', $hook)
+                ->orWhereHas('event', function ($query) use ($hook) {
                     return $query->where('slug', $hook);
                 });
         });

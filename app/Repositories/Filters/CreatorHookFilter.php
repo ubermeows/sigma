@@ -5,7 +5,7 @@ namespace App\Repositories\Filters;
 use Illuminate\Database\Eloquent\Builder;
 use App\Repositories\Abstracts\AbstractFilter;
 
-class CreatorFilter extends AbstractFilter
+class CreatorHookFilter extends AbstractFilter
 {
     public function apply(Builder $builder): void
     {

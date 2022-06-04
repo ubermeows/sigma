@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Api\Clips;
+namespace Tests\Api;
 
 use Tests\TestCase;
 use App\Models\Clip;

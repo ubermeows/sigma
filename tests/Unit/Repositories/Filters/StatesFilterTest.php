@@ -27,7 +27,9 @@ class StatesFilterTest extends TestCase
             ))
             ->create();
 
-        $request = $this->mockRequest(query: ['states' => $states]);
+        $request = $this->mockRequest(query: [
+            'states' => $states,
+        ]);
 
         $builder = Clip::query();
 

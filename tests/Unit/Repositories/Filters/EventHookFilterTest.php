@@ -5,11 +5,11 @@ namespace Tests\Unit\Repositories\Filters;
 use Tests\TestCase;
 use App\Models\Clip;
 use App\Models\Event;
-use App\Repositories\Filters\EventFilter;
+use App\Repositories\Filters\EventHookFilter;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\DatabaseMigrations; 
 
-class EventFilterTest extends TestCase
+class EventHookFilterTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -23,11 +23,13 @@ class EventFilterTest extends TestCase
             ->has(Clip::factory())
             ->create();
 
-        $request = $this->mockRequest(query: ['event' => $event->{$attribute}]);
+        $request = $this->mockRequest(query: [
+            'event' => $event->{$attribute},
+        ]);
 
         $builder = Clip::query();
 
-        (new EventFilter($request))->apply($builder);
+        (new EventHookFilter($request))->apply($builder);
 
         $items = $builder->get();
 

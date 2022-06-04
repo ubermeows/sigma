@@ -21,7 +21,9 @@ class RandomizerFilterTest extends TestCase
             ->count(30)
             ->create();
 
-        $request = $this->mockRequest(query: ['random' => true]);
+        $request = $this->mockRequest(query: [
+            'random' => true,
+        ]);
 
         $builder = Clip::query();
 

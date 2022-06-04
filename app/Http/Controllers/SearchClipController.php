@@ -18,9 +18,9 @@ class SearchClipController extends Controller
     protected $filters = [
         Filters\AfterDateFilter::class,
         Filters\BeforeDateFilter::class,
-        Filters\CreatorFilter::class,
-        Filters\EventFilter::class,
-        Filters\GameFilter::class,
+        Filters\CreatorHookFilter::class,
+        Filters\EventHookFilter::class,
+        Filters\GameHookFilter::class,
         Filters\LoadRelationsFilter::class,
         Filters\OrderByFilter::class,
         Filters\RandomizerFilter::class,
